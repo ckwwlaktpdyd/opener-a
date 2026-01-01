@@ -1,0 +1,552 @@
+/* Dashboard Wireframe Styles */
+.dashboard-wireframe {
+    min-height: 100vh;
+    background: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation styles are now in TopNav.css */
+
+/* Main Content */
+.dashboard-content {
+    flex: 1;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Content Rows */
+.content-row {
+    display: grid;
+    gap: 20px;
+}
+
+.row-1 {
+    grid-template-columns: 1fr 280px;
+}
+
+.row-2 {
+    grid-template-columns: 1fr 280px;
+}
+
+.row-3 {
+    grid-template-columns: 1fr 280px;
+}
+
+/* Welcome Section */
+.welcome-section {
+    padding: 32px;
+}
+
+.welcome-emoji {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.welcome-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.welcome-subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Card Styles */
+.card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.9) 50%, rgba(204, 251, 241, 0.6) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(20, 184, 166, 0.15);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 16px rgba(20, 184, 166, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 
+        0 12px 32px rgba(20, 184, 166, 0.18),
+        0 4px 12px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border-color: rgba(20, 184, 166, 0.3);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 1) 0%, rgba(240, 253, 250, 0.95) 50%, rgba(153, 246, 228, 0.5) 100%);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #0D9488;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 12px;
+    display: block;
+    position: relative;
+    padding-left: 12px;
+}
+
+.card-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 12px;
+    background: linear-gradient(180deg, #14B8A6 0%, #2DD4BF 100%);
+    border-radius: 2px;
+}
+
+/* Streak System Card */
+.streak-system-card {
+    min-height: 120px;
+}
+
+.streak-content {
+    text-align: center;
+    width: 100%;
+}
+
+.streak-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.streak-fire {
+    font-size: 28px;
+}
+
+.streak-number {
+    font-size: 40px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.streak-unit {
+    font-size: 16px;
+    color: #14B8A6;
+    font-weight: 600;
+}
+
+.streak-message {
+    font-size: 12px;
+    color: #888888;
+}
+
+/* Weekly Chart Card */
+.weekly-chart-card {
+    min-height: 200px;
+}
+
+.chart-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.weekly-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex: 1;
+    gap: 12px;
+    padding-top: 16px;
+}
+
+.chart-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 8px;
+}
+
+.chart-bar {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(180deg, rgba(20, 184, 166, 0.08) 0%, rgba(20, 184, 166, 0.15) 100%);
+    border: 1px solid rgba(20, 184, 166, 0.12);
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    position: relative;
+}
+
+.chart-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 19px,
+        rgba(20, 184, 166, 0.05) 19px,
+        rgba(20, 184, 166, 0.05) 20px
+    );
+    pointer-events: none;
+}
+
+.chart-bar-fill {
+    width: 100%;
+    background: linear-gradient(180deg, #5EEAD4 0%, #2DD4BF 30%, #14B8A6 100%);
+    border-radius: 8px 8px 0 0;
+    min-height: 4px;
+    transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 -4px 12px rgba(20, 184, 166, 0.3);
+    position: relative;
+}
+
+.chart-bar-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+    border-radius: 8px 8px 0 0;
+}
+
+.chart-label {
+    font-size: 12px;
+    color: #666666;
+    font-weight: 500;
+}
+
+/* Today's Can Card */
+.today-can-card {
+    min-height: 200px;
+    cursor: pointer;
+}
+
+.can-content {
+    text-align: center;
+    width: 100%;
+}
+
+.can-icon {
+    font-size: 48px;
+    margin: 8px 0;
+}
+
+.can-status {
+    margin: 8px 0;
+}
+
+.can-count {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.can-text {
+    font-size: 14px;
+    color: #666666;
+    display: block;
+}
+
+.can-button {
+    margin-top: 12px;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.can-button:hover {
+    background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+}
+
+/* Recommendation Area (Dark as per wireframe) */
+.dark-area {
+    background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
+    border-radius: 12px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.2);
+}
+
+.dark-content {
+    text-align: center;
+    color: #ffffff;
+}
+
+.dark-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.dark-message {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 20px;
+}
+
+.dark-button {
+    padding: 12px 24px;
+    background: #ffffff;
+    color: #0F766E;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dark-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+/* Stats Section */
+.stats-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-card {
+    flex-direction: column;
+}
+
+.stat-content {
+    text-align: center;
+    width: 100%;
+}
+
+.accuracy-card {
+    min-height: 100px;
+}
+
+.stat-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.stat-unit {
+    font-size: 20px;
+    font-weight: 600;
+    color: #666666;
+}
+
+.stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.small-stat {
+    min-height: 80px;
+    padding: 16px;
+}
+
+.card-label-small {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.stat-value-small {
+    text-align: center;
+}
+
+.stat-number-small {
+    font-size: 24px;
+    font-weight: 700;
+    color: #14B8A6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .top-nav {
+        padding: 16px 24px;
+    }
+
+    .nav-left {
+        gap: 24px;
+    }
+
+    .nav-links {
+        gap: 20px;
+    }
+
+    .dashboard-content {
+        padding: 24px;
+    }
+
+    .row-1,
+    .row-2,
+    .row-3 {
+        grid-template-columns: 1fr 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-nav {
+        flex-wrap: wrap;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .nav-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .nav-link {
+        font-size: 13px;
+    }
+
+    .nav-right {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+    }
+
+    .dashboard-content {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .row-1,
+    .row-2,
+    .row-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-section {
+        padding: 24px 16px;
+    }
+
+    .welcome-title {
+        font-size: 20px;
+    }
+
+    .welcome-subtitle {
+        font-size: 16px;
+    }
+
+    .weekly-chart-card,
+    .today-can-card,
+    .dark-area {
+        min-height: 180px;
+    }
+
+    .chart-bar {
+        height: 80px;
+    }
+
+    .stat-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links {
+        gap: 12px;
+    }
+
+    .dashboard-content {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .chart-bar {
+        height: 60px;
+    }
+
+    .stat-number {
+        font-size: 32px;
+    }
+
+    .stat-number-small {
+        font-size: 20px;
+    }
+}

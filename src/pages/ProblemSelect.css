@@ -1,0 +1,190 @@
+/* Problem Select Page - Wireframe Style */
+.page-wireframe {
+    min-height: 100vh;
+    background: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-content {
+    flex: 1;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Header Text */
+.page-header-text {
+    margin-bottom: 32px;
+}
+
+.header-line {
+    font-size: 16px;
+    color: #1a1a1a;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Selection Container */
+.selection-container {
+    background: #FFFFFF;
+    border: 1px solid #E9ECEF;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    gap: 0;
+    min-height: 400px;
+}
+
+.selection-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px;
+}
+
+.selection-column:first-child {
+    padding-left: 0;
+}
+
+.selection-column:last-child {
+    padding-right: 0;
+}
+
+.column-divider {
+    width: 1px;
+    background: #E9ECEF;
+    align-self: stretch;
+}
+
+.column-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666666;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.column-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+/* Option Buttons */
+.option-button {
+    width: 100%;
+    padding: 16px 24px;
+    background: #F8F9FA;
+    border: 2px solid transparent;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #212529;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.option-button:hover {
+    background: #E9ECEF;
+}
+
+.option-button.selected {
+    background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+/* Year Dropdown */
+.year-dropdown {
+    width: 100%;
+}
+
+.year-select {
+    width: 100%;
+    padding: 16px 24px;
+    background: #F8F9FA;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #212529;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    text-align: center;
+    padding-right: 48px;
+}
+
+.year-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #14B8A6;
+}
+
+/* Start Button */
+.start-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 32px;
+}
+
+.start-button {
+    padding: 14px 28px;
+    background: #E9ECEF;
+    border: 1px solid #E9ECEF;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6C757D;
+    cursor: not-allowed;
+    transition: all 0.2s ease;
+}
+
+.start-button.active {
+    background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
+    border-color: transparent;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.start-button.active:hover {
+    background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-content {
+        padding: 24px 16px;
+    }
+
+    .selection-container {
+        flex-direction: column;
+        padding: 24px;
+        gap: 24px;
+        min-height: auto;
+    }
+
+    .selection-column {
+        padding: 0;
+    }
+
+    .column-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .start-button-container {
+        justify-content: center;
+    }
+
+    .start-button {
+        width: 100%;
+    }
+}

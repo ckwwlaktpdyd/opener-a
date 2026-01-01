@@ -1,0 +1,174 @@
+.scrapbook-content {
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 80px;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    background: #e8e8e8;
+    border-radius: 16px;
+    margin-bottom: 40px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 16px;
+}
+
+.filter-dropdown {
+    padding: 12px 24px;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #333;
+}
+
+.filter-dropdown:hover {
+    background: #f5f5f5;
+}
+
+.sort-group {
+    display: flex;
+    align-items: center;
+}
+
+.sort-select {
+    padding: 12px 20px;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    color: #333;
+}
+
+/* Scrap Grid */
+.scrap-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.scrap-card {
+    background: #d9d9d9;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 200px;
+}
+
+.scrap-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #cecece;
+}
+
+.scrap-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.scrap-subject {
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a1a1a;
+}
+
+.bookmark-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.bookmark-btn:hover {
+    transform: scale(1.1);
+}
+
+.scrap-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.scrap-line {
+    font-size: 13px;
+    color: #555;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.scrap-card-footer {
+    padding-top: 12px;
+    border-top: 1px solid #b8b8b8;
+}
+
+.scrap-date {
+    font-size: 12px;
+    color: #666;
+}
+
+@media (max-width: 1200px) {
+    .scrap-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .scrap-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filter-bar {
+        padding: 20px 24px;
+    }
+
+    .scrapbook-content {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .filter-bar {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        flex-wrap: wrap;
+    }
+
+    .filter-dropdown {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .scrap-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .scrapbook-content {
+        padding: 24px 16px;
+    }
+}
