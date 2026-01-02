@@ -1,13 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>오프너 A - UT Prototype</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오프너 A - UT Prototype</title>
+  <!-- Maze UT Snippet -->
+  <script>
+    (function (m, a, z, e) {
+      var s, t, u, v;
+      try {
+        t = m.sessionStorage.getItem('maze-us');
+      } catch (err) { }
+
+      if (!t) {
+        t = new Date().getTime();
+        try {
+          m.sessionStorage.setItem('maze-us', t);
+        } catch (err) { }
+      }
+
+      u = document.currentScript || (function () {
+        var w = document.getElementsByTagName('script');
+        return w[w.length - 1];
+      })();
+      v = u && u.nonce;
+
+      s = a.createElement('script');
+      s.src = z + '?apiKey=' + e;
+      s.async = true;
+      if (v) s.setAttribute('nonce', v);
+      a.getElementsByTagName('head')[0].appendChild(s);
+      m.mazeUniversalSnippetApiKey = e;
+    })(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'c2cece54-a337-4c9d-b8a5-e61f3ecdf176');
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
