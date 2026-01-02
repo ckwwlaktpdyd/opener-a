@@ -71,7 +71,7 @@
     padding: 48px 40px;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 16px;
     overflow-y: auto;
 }
 
@@ -135,6 +135,11 @@
     transition: box-shadow 0.3s ease;
 }
 
+.answer-section {
+    padding: 16px 16px 12px;
+    flex: none !important;
+}
+
 .problem-section:hover,
 .answer-section:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -189,14 +194,14 @@
 .choices-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
+    gap: 8px;
 }
 
 .choice-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 18px 20px;
+    padding: 12px 16px;
     background: #ffffff;
     border: 2px solid #E9ECEF;
     border-radius: 12px;
