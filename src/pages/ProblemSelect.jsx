@@ -10,9 +10,9 @@ export default function ProblemSelect() {
     const [selectedExamType, setSelectedExamType] = useState(null);
 
     const subjects = [
-        { id: 'korean', name: '국어' },
-        { id: 'english', name: '영어' },
-        { id: 'math', name: '수학' },
+        { id: 'korean', name: '미적분' },
+        { id: 'english', name: '확률과 통계' },
+        { id: 'math', name: '기하' },
     ];
 
     const years = ['2025', '2024', '2023', '2022', '2021'];

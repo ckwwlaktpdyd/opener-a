@@ -69,26 +69,58 @@ export const sampleProblems = [
     id: 1,
     subject: "수학",
     year: "2024",
-    examType: "suneung",
+    examType: "6월 모의평가",
     number: 15,
-    question: "다음 중 lim(x→0) (sin 3x) / x 의 값은?",
+    difficulty: 3,
+    question: `첫째항이 양수인 수열 {aₙ}이 모든 자연수 n에 대하여
+
+  a₁ + a₂ + a₃ + ⋯ + aₙ = n² + 2n
+
+을 만족시킬 때, 다음 물음에 답하시오.
+
+수열 {aₙ}의 일반항을 구하면 aₙ = 2n + 1 이다.
+
+이때 Σ(k=1부터 20까지) 1/(aₖ × aₖ₊₁) 의 값은?`,
     choices: [
-      { id: 1, text: "1" },
-      { id: 2, text: "2" },
-      { id: 3, text: "3" },
-      { id: 4, text: "4" },
-      { id: 5, text: "5" },
+      { id: 1, text: "5/21" },
+      { id: 2, text: "10/41" },
+      { id: 3, text: "20/123" },
+      { id: 4, text: "10/43" },
+      { id: 5, text: "20/129" },
     ],
     correctAnswer: 3,
-    timeLimit: 120,
-    explanation: "lim(x→0) (sin 3x) / x = lim(x→0) 3 × (sin 3x) / 3x = 3 × 1 = 3",
+    timeLimit: 180,
+    explanation: `aₙ = 2n + 1 이므로
+1/(aₖ × aₖ₊₁) = 1/((2k+1)(2k+3))
+= (1/2)[1/(2k+1) - 1/(2k+3)] (부분분수 분해)
+
+따라서 Σ(k=1~20) 1/(aₖ × aₖ₊₁)
+= (1/2)[(1/3 - 1/5) + (1/5 - 1/7) + ⋯ + (1/41 - 1/43)]
+= (1/2)[1/3 - 1/43]
+= (1/2) × 40/129 = 20/129`,
+    variationProblem: {
+      question: `수열 {bₙ}이 모든 자연수 n에 대하여 bₙ = 3n - 1 을 만족할 때, 다음 물음에 답하시오.
+
+수열 {bₙ}의 첫째항부터 제 n항까지의 합을 Sₙ이라 하자.
+
+이때 Σ(k=1부터 15까지) 1/(bₖ × bₖ₊₁) 의 값은?`,
+      choices: [
+        { id: 1, text: "5/46" },
+        { id: 2, text: "15/92" },
+        { id: 3, text: "5/47" },
+        { id: 4, text: "30/184" },
+        { id: 5, text: "15/94" },
+      ],
+      correctAnswer: 5,
+    },
   },
   {
     id: 2,
     subject: "수학",
     year: "2024",
-    examType: "suneung",
+    examType: "9월 모의평가",
     number: 21,
+    difficulty: 4,
     question: "함수 f(x) = x³ - 6x² + 9x + 2의 극댓값을 M, 극솟값을 m이라 할 때, M - m의 값은?",
     choices: [
       { id: 1, text: "2" },
@@ -100,6 +132,17 @@ export const sampleProblems = [
     correctAnswer: 2,
     timeLimit: 180,
     explanation: "f'(x) = 3x² - 12x + 9 = 3(x-1)(x-3)\n극댓값: f(1) = 6, 극솟값: f(3) = 2\nM - m = 6 - 2 = 4",
+    variationProblem: {
+      question: "함수 g(x) = 2x³ - 9x² + 12x - 3의 극댓값을 M, 극솟값을 m이라 할 때, M + m의 값은?",
+      choices: [
+        { id: 1, text: "-2" },
+        { id: 2, text: "0" },
+        { id: 3, text: "2" },
+        { id: 4, text: "4" },
+        { id: 5, text: "6" },
+      ],
+      correctAnswer: 2,
+    },
   },
 ];
 
@@ -168,7 +211,7 @@ export const mockChatHistory = [
   },
   {
     id: 2,
-    type: "user", 
+    type: "user",
     message: "왜 lim(x→0) sin3x/x가 3이 되나요?",
   },
   {

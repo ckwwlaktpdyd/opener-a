@@ -2,158 +2,202 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-xl);
-    background: var(--bg-primary);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: white;
 }
 
 .login-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 400px;
-    margin: 0 auto;
     width: 100%;
-    gap: 60px;
+    max-width: 410px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.login-header {
-    text-align: center;
-}
-
+/* Logo Section */
 .login-logo {
-    width: 72px;
-    height: 72px;
-    background: var(--accent-gradient);
-    border-radius: var(--radius-lg);
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto var(--spacing-md);
-    font-size: 36px;
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+    margin-bottom: 0;
+    position: relative;
 }
 
-.login-header h1 {
-    font-size: 28px;
+.logo-square {
+    width: 56px;
+    height: 56px;
+    background: #15A9A1;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.logo-text {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-left: 12px;
+}
+
+.logo-letter {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-size: 32px;
     font-weight: 700;
-    margin-bottom: var(--spacing-xs);
+    color: #282A2E;
+    line-height: 1;
 }
 
-.login-header p {
-    color: var(--text-secondary);
-    font-size: var(--font-size-md);
-}
-
-.login-illustration {
+/* Input Group */
+.input-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-lg);
-    padding: var(--spacing-xl) 0;
+    gap: 8px;
 }
 
-.illustration-circle {
-    width: 120px;
-    height: 120px;
-    background: var(--bg-card);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgba(99, 102, 241, 0.3);
+.input-group label {
+    color: #282A2E;
+    font-size: 16px;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-weight: 500;
+    line-height: 24px;
 }
 
-.illustration-icon {
-    font-size: 56px;
+.input-group input {
+    height: 60px;
+    padding: 0 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #D2D2D0;
+    outline: none;
+    font-size: 18px;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-weight: 400;
+    line-height: 27px;
+    color: #282A2E;
+    transition: all 0.2s ease;
 }
 
-.illustration-stats {
-    display: flex;
-    gap: var(--spacing-xl);
+.input-group input::placeholder {
+    color: #D2D2D0;
 }
 
-.stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+.input-group input:focus {
+    border-color: #00B3AB;
+    box-shadow: 0 0 0 3px rgba(0, 179, 171, 0.1);
 }
 
-.stat-value {
-    font-size: var(--font-size-xl);
-    font-weight: 700;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.stat-label {
-    font-size: var(--font-size-sm);
-    color: var(--text-muted);
-}
-
-.login-buttons {
+/* Button Group */
+.button-group {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: 16px;
+    margin-top: 8px;
 }
 
 .login-btn {
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-sm);
-    width: 100%;
-    padding: 16px 24px;
+    gap: 4px;
+    font-size: 16px;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-weight: 700;
+    line-height: 24px;
     border: none;
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-md);
-    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all 0.2s ease;
+}
+
+.login-btn.primary {
+    background: #00B3AB;
+    color: white;
+}
+
+.login-btn.primary:hover {
+    background: #009b94;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 179, 171, 0.3);
+}
+
+.login-btn.primary:active {
+    transform: translateY(0);
 }
 
 .login-btn.kakao {
-    background: #FEE500;
-    color: #000000;
+    background: #FFE500;
+    color: #282A2E;
+    position: relative;
 }
 
 .login-btn.kakao:hover {
     background: #f5dc00;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 229, 0, 0.3);
 }
 
-.login-btn.email {
-    background: var(--bg-card);
-    color: var(--text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.login-btn.kakao:active {
+    transform: translateY(0);
 }
 
-.login-btn.email:hover {
-    background: var(--bg-card-hover);
+.kakao-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 3C6.477 3 2 6.582 2 11c0 2.867 1.878 5.378 4.697 6.797-.145.527-.935 3.401-1.012 3.66 0 0-.02.083-.009.117.012.034.046.041.046.041.061.008.141-.043.141-.043l4.27-2.82c.54.054 1.09.082 1.648.082C17.523 18.834 22 15.252 22 11c0-4.418-4.477-8-10-8z' fill='%23282A2E'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
 }
 
-.login-btn:active {
-    transform: scale(0.98);
+/* Sign up link */
+.signup-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
 }
 
-.login-terms {
-    text-align: center;
-    padding: var(--spacing-lg) 0;
+.signup-text {
+    color: #7D7E7F;
+    font-size: 14px;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-weight: 500;
+    line-height: 21px;
 }
 
-.login-terms p {
-    font-size: var(--font-size-xs);
-    color: var(--text-muted);
-    line-height: 1.6;
-}
-
-.login-terms a {
-    color: var(--accent-secondary);
-    text-decoration: none;
-}
-
-.login-terms a:hover {
+.signup-action {
+    color: #7D7E7F;
+    font-size: 14px;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-weight: 500;
+    line-height: 21px;
     text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.signup-action:hover {
+    color: #00B3AB;
+}
+
+/* Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-content {
+    animation: slideUp 0.5s ease-out;
 }

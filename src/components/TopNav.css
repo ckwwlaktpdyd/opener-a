@@ -28,13 +28,21 @@
     align-items: center;
     gap: 12px;
     text-decoration: none;
+    transition: none;
+    line-height: 1;
 }
 
-.logo-box {
+.logo:hover {
+    opacity: 1;
+}
+
+.logo-icon {
     width: 24px;
     height: 24px;
-    background: #c4c4c4;
-    border-radius: 4px;
+    flex-shrink: 0;
+    animation: none;
+    transition: none;
+    display: block;
 }
 
 .logo-text {
@@ -42,6 +50,10 @@
     font-weight: 600;
     color: #1a1a1a;
     text-decoration: underline;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    margin-top: -2px;
 }
 
 .nav-links {
@@ -76,11 +88,10 @@
     gap: 8px;
 }
 
-.streak-icon-box {
+.streak-icon {
     width: 20px;
     height: 20px;
-    background: #c4c4c4;
-    border-radius: 4px;
+    flex-shrink: 0;
 }
 
 .streak-text {

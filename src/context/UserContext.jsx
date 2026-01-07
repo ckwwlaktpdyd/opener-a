@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from 'react';
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
-    const [userCans, setUserCans] = useState(30);
+    const [userCans, setUserCans] = useState(10);
 
     const useCan = () => {
         if (userCans > 0) {

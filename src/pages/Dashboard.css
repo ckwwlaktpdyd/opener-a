@@ -4,121 +4,409 @@
 }
 
 .dashboard-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 40px 40px;
+    max-width: none;
+    margin: 0;
+    padding: 114px 40px 40px;
 }
 
 /* Welcome Section */
 .welcome-section {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 48px;
+    gap: 24px;
+    margin: 0 auto 56px;
+    max-width: 1196px;
 }
 
-.welcome-emoji {
-    font-size: 48px;
-    line-height: 1;
-}
-
-.welcome-text {
+.welcome-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 32px;
+}
+
+.welcome-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.welcome-title {
+    font-size: 28px;
     font-weight: 700;
-    color: #1a1a1a;
-    line-height: 1.4;
+    line-height: 42px;
+    color: #282A2E;
     margin: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.welcome-subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #282A2E;
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Dashboard Grid */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 792px 380px;
+    gap: 24px;
+    margin: 0 auto;
+    max-width: 1196px;
+    /* 792 + 380 + 24 gap */
+}
+
+/* Left Column */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+/* Stat Cards */
+.stat-card {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0px 4px 30px rgba(40, 42, 46, 0.08);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0px 8px 40px rgba(40, 42, 46, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Accuracy Card */
+.accuracy-card {
+    padding: 48px 144px;
+}
+
+.accuracy-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.accuracy-info {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
     gap: 32px;
 }
 
-/* Stats Column */
-.stats-column {
+.accuracy-title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 42px;
+    color: #282A2E;
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.accuracy-description {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #7D7E7F;
+    margin: 0;
+    margin-top: 4px;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.accuracy-legend {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    gap: 24px;
+    align-items: center;
 }
 
-.stat-card {
-    background: #E5E5E5;
-    border-radius: 16px;
-    padding: 32px;
+.legend-item {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    gap: 4px;
 }
 
-.stat-card.accuracy-card {
-    min-height: 300px;
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
 }
 
-.card-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1a1a1a;
-    text-align: center;
+.legend-dot.correct {
+    background: #00B3AB;
 }
 
-.stat-placeholder {
-    flex: 1;
-    background: #C4C4C4;
-    border-radius: 12px;
-    min-height: 200px;
+.legend-dot.incorrect {
+    background: #D2D2D0;
+}
+
+.legend-label {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #282A2E;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.accuracy-display {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.stat-placeholder.small {
-    min-height: 80px;
+.accuracy-circle {
+    position: relative;
+    width: 180px;
+    height: 180px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: #D2D2D0;
+    stroke-width: 8;
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: #00B3AB;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.6s ease;
+}
+
+.accuracy-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.accuracy-number {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 42px;
+    color: #008C85;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.accuracy-rank {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #7D7E7F;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Study Time & Problems Cards */
+.study-time-card,
+.problems-card {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    background: #E6F9F8;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.card-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.card-label {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 27px;
+    color: #282A2E;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 42px;
+    color: #282A2E;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stat-description {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #7D7E7F;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Shortcut Card */
 .shortcut-card {
-    background: #E5E5E5;
-    border-radius: 16px;
-    padding: 48px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0px 4px 30px rgba(40, 42, 46, 0.08);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-height: 500px;
+    height: 522px;
 }
 
-.shortcut-card:hover {
-    background: #D5D5D5;
-    transform: translateY(-2px);
+.shortcut-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 52px;
+    width: 100%;
+}
+
+.shortcut-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortcut-icon svg {
+    width: 80px;
+    height: 80px;
+}
+
+.shortcut-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+    padding: 0 12px;
 }
 
 .shortcut-title {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 700;
-    color: #1a1a1a;
-    text-align: center;
+    line-height: 42px;
+    color: #282A2E;
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .shortcut-subtitle {
     font-size: 16px;
-    color: #666666;
-    text-align: center;
+    font-weight: 400;
+    line-height: 24px;
+    color: #7D7E7F;
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.shortcut-button {
+    width: 200px;
+    height: 48px;
+    padding: 0 16px;
+    background: #00B3AB;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #FFFFFF;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.shortcut-button:hover {
+    background: #008C85;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 12px rgba(0, 179, 171, 0.3);
+}
+
+.shortcut-button:active {
+    transform: translateY(0);
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 1400px) {
+    .dashboard-main {
+        padding: 114px 40px 40px;
+    }
+
     .dashboard-grid {
         grid-template-columns: 1fr;
+        max-width: 792px;
+        margin: 0 auto;
     }
 
     .shortcut-card {
-        min-height: 300px;
+        height: auto;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-main {
+        padding: 80px 40px 40px;
+    }
+
+    .accuracy-card {
+        padding: 24px;
+    }
+
+    .accuracy-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+    }
+
+    .accuracy-info {
+        width: 100%;
+        text-align: center;
+        align-items: center;
+    }
+
+    .accuracy-legend {
+        justify-content: center;
     }
 }
 
@@ -127,11 +415,59 @@
         padding: 80px 20px 40px;
     }
 
-    .welcome-text {
+    .welcome-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .welcome-title {
         font-size: 24px;
+        line-height: 36px;
+    }
+
+    .welcome-subtitle {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .bottom-row {
+        grid-template-columns: 1fr;
+    }
+
+    .accuracy-circle {
+        width: 160px;
+        height: 160px;
+    }
+
+    .accuracy-number {
+        font-size: 24px;
+        line-height: 36px;
+    }
+
+    .accuracy-rank {
+        font-size: 14px;
+        line-height: 21px;
     }
 
     .shortcut-title {
-        font-size: 28px;
+        font-size: 24px;
+        line-height: 36px;
+    }
+
+    .shortcut-icon svg {
+        width: 64px;
+        height: 64px;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .stat-content {
+        margin-top: 12px;
     }
 }
