@@ -345,6 +345,7 @@
 /* AI Sidebar */
 .ai-sidebar {
     width: 320px;
+    max-height: 900px;
     align-self: stretch;
     background: var(--white);
     border-radius: 20px;
@@ -387,11 +388,6 @@
     color: var(--neutral-600);
     font-size: 16px;
     cursor: pointer;
-}
-
-.ai-content {
-    flex: 1;
-    padding: 24px;
 }
 
 .ai-footer {
@@ -444,6 +440,7 @@
 /* Chat Messages */
 .ai-content {
     flex: 1;
+    min-height: 0;
     padding: 16px;
     overflow-y: auto;
     display: flex;
@@ -886,6 +883,7 @@
     background: var(--danger-200);
     color: var(--danger-600);
 }
+
 /* Variation Explanation */
 .variation-explanation {
     margin-top: 20px;
@@ -972,12 +970,16 @@
 }
 
 @keyframes celebration {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1) rotate(0deg);
     }
+
     25% {
         transform: scale(1.2) rotate(-10deg);
     }
+
     75% {
         transform: scale(1.2) rotate(10deg);
     }
