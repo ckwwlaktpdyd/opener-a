@@ -20,8 +20,8 @@ export default function SplashScreen() {
                     <div className="logo-icon">
                         <span className="logo-emoji">🎯</span>
                     </div>
-                    <h1 className="logo-text">오답제로</h1>
-                    <p className="logo-subtitle">AI가 분석하는 나만의 오답노트</p>
+                    <h1 className="logo-text">오프너</h1>
+                    <p className="logo-subtitle">AI가 분석하는 학습 시작점</p>
                 </div>
 
                 <div className="splash-loader">

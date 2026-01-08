@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg);
 }
 
 .logo-icon {
@@ -46,12 +46,13 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-top: var(--spacing-sm);
+    margin: 0;
 }
 
 .logo-subtitle {
     font-size: var(--font-size-md);
     color: var(--text-secondary);
+    margin: 0;
 }
 
 .splash-loader {

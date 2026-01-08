@@ -51,7 +51,7 @@ export default function BottomNav() {
             <nav className="sidebar-nav">
                 <div className="sidebar-logo">
                     <span className="logo-icon">🎯</span>
-                    <span className="logo-text">오답제로</span>
+                    <span className="logo-text">오프너</span>
                 </div>
                 <div className="sidebar-menu">
                     {navItems.map((item) => (

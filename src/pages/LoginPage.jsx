@@ -63,12 +63,6 @@ export default function LoginPage() {
                         카카오 로그인
                     </button>
                 </div>
-
-                {/* Sign up link */}
-                <div className="signup-link">
-                    <span className="signup-text">계정이 없으신가요?</span>
-                    <span className="signup-action">회원가입</span>
-                </div>
             </div>
         </div>
     );
