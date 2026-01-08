@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
+import openerLogo from '../assets/opener-logo.png';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function LoginPage() {
             <div className="login-content">
                 {/* Logo */}
                 <div className="login-logo">
-                    <div className="logo-square"></div>
+                    <img src={openerLogo} alt="오프너 로고" className="logo-square" />
                     <div className="logo-text">
                         <span className="logo-letter">오</span>
                         <span className="logo-letter">프</span>
