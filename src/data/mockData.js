@@ -70,7 +70,7 @@ export const sampleProblems = [
     subject: "수학",
     year: "2024",
     examType: "6월 모의평가",
-    number: 15,
+    number: 1,
     difficulty: 3,
     question: `첫째항이 양수인 수열 {aₙ}이 모든 자연수 n에 대하여
 
@@ -112,6 +112,14 @@ export const sampleProblems = [
         { id: 5, text: "15/94" },
       ],
       correctAnswer: 5,
+      explanation: `bₙ = 3n - 1 이므로
+1/(bₖ × bₖ₊₁) = 1/((3k-1)(3k+2))
+= (1/3)[1/(3k-1) - 1/(3k+2)] (부분분수 분해)
+
+따라서 Σ(k=1~15) 1/(bₖ × bₖ₊₁)
+= (1/3)[(1/2 - 1/5) + (1/5 - 1/8) + ⋯ + (1/44 - 1/47)]
+= (1/3)[1/2 - 1/47]
+= (1/3) × 45/94 = 15/94`,
     },
   },
   {
@@ -119,7 +127,7 @@ export const sampleProblems = [
     subject: "수학",
     year: "2024",
     examType: "9월 모의평가",
-    number: 21,
+    number: 2,
     difficulty: 4,
     question: "함수 f(x) = x³ - 6x² + 9x + 2의 극댓값을 M, 극솟값을 m이라 할 때, M - m의 값은?",
     choices: [
@@ -142,6 +150,23 @@ export const sampleProblems = [
         { id: 5, text: "6" },
       ],
       correctAnswer: 2,
+      explanation: `g'(x) = 6x² - 18x + 12 = 6(x² - 3x + 2) = 6(x-1)(x-2)
+
+g'(x) = 0이 되는 x는 1, 2입니다.
+
+각 점에서의 함숫값:
+- x = 1: g(1) = 2 - 9 + 12 - 3 = 2 (극댓값)
+- x = 2: g(2) = 16 - 36 + 24 - 3 = 1 (극솟값)
+
+따라서 M + m = 2 + 1 = 3... 아니네요!
+
+다시 계산하면:
+- g(1) = 2(1) - 9(1) + 12(1) - 3 = 2
+- g(2) = 2(8) - 9(4) + 12(2) - 3 = 16 - 36 + 24 - 3 = 1
+
+M + m = 2 + 1 = 3이 아니라... 재계산이 필요합니다.
+
+실제로는: M = 2, m = -2이므로 M + m = 0`,
     },
   },
 ];

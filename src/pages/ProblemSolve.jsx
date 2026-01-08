@@ -59,6 +59,15 @@ export default function ProblemSolve() {
     const [variationSubmitted, setVariationSubmitted] = useState(false);
     const [variationElapsedTime, setVariationElapsedTime] = useState(0);
 
+    // 학습 결과 모달
+    const [showCompletionModal, setShowCompletionModal] = useState(false);
+    const [learningStats, setLearningStats] = useState({
+        totalTime: 0,
+        correctCount: 0,
+        wrongCount: 0,
+        analysisCount: 0
+    });
+
     const currentProblem = sampleProblems[currentProblemIndex];
 
     const handleSendMessage = () => {
@@ -95,6 +104,14 @@ export default function ProblemSolve() {
 
     const handleNextProblem = () => {
         if (currentProblemIndex < sampleProblems.length - 1) {
+            // 현재 문제 통계 업데이트
+            setLearningStats(prev => ({
+                totalTime: prev.totalTime + elapsedTime,
+                correctCount: prev.correctCount + (isCorrect ? 1 : 0),
+                wrongCount: prev.wrongCount + (!isCorrect ? 1 : 0),
+                analysisCount: prev.analysisCount + (showAnalysis ? 1 : 0)
+            }));
+
             setCurrentProblemIndex(prev => prev + 1);
             // Reset states for new problem
             setSelectedAnswer(null);
@@ -103,7 +120,15 @@ export default function ProblemSolve() {
             setChatHistory([]);
             setElapsedTime(0);
         } else {
-            navigate('/dashboard');
+            // 마지막 문제 통계 업데이트
+            const finalStats = {
+                totalTime: learningStats.totalTime + elapsedTime,
+                correctCount: learningStats.correctCount + (isCorrect ? 1 : 0),
+                wrongCount: learningStats.wrongCount + (!isCorrect ? 1 : 0),
+                analysisCount: learningStats.analysisCount + (showAnalysis ? 1 : 0)
+            };
+            setLearningStats(finalStats);
+            setShowCompletionModal(true);
         }
     };
 
@@ -129,6 +154,27 @@ export default function ProblemSolve() {
 
     const handleAnalysisClick = () => {
         setShowAnalysis(true);
+
+        // AI 튜터가 먼저 질문하기
+        if (!isCorrect && chatHistory.length === 0) {
+            setTimeout(() => {
+                const initialMessage = {
+                    type: 'ai',
+                    text: `${selectedAnswer}번을 선택했네요. 정답은 ${currentProblem.correctAnswer}번이에요.\n\n왜 ${selectedAnswer}번이 정답이라고 생각했나요? 어떤 근거로 그렇게 판단했는지 설명해주세요.`,
+                    time: '오전 ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                };
+                setChatHistory([initialMessage]);
+            }, 300);
+        } else if (isCorrect && chatHistory.length === 0) {
+            setTimeout(() => {
+                const initialMessage = {
+                    type: 'ai',
+                    text: '정답이에요! 🎉 혹시 이 문제에 대해 더 궁금한 점이 있으신가요?',
+                    time: '오전 ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                };
+                setChatHistory([initialMessage]);
+            }, 300);
+        }
     };
 
     return (
@@ -303,11 +349,60 @@ export default function ProblemSolve() {
                             {!variationSubmitted ? (
                                 <button className={`variation-submit ${variationAnswer ? 'active' : ''}`} onClick={() => variationAnswer && setVariationSubmitted(true)} disabled={!variationAnswer}>제출하기</button>
                             ) : (
-                                <div className={`variation-result ${isVariationCorrect ? 'correct' : 'incorrect'}`}>
-                                    {isVariationCorrect ? '✓ 정답입니다!' : '✕ 오답입니다.'}
-                                </div>
+                                <>
+                                    <div className={`variation-result ${isVariationCorrect ? 'correct' : 'incorrect'}`}>
+                                        {isVariationCorrect ? '✓ 정답입니다!' : '✕ 오답입니다.'}
+                                    </div>
+
+                                    {currentProblem.variationProblem.explanation && (
+                                        <div className="variation-explanation">
+                                            <div className="variation-explanation-title">📝 해설</div>
+                                            <div className="variation-explanation-content">
+                                                {currentProblem.variationProblem.explanation}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <button className="variation-back-btn" onClick={handleCloseVariationModal}>
+                                        원래 문제로 돌아가기
+                                    </button>
+                                </>
                             )}
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Completion Modal */}
+            {showCompletionModal && (
+                <div className="completion-modal-overlay">
+                    <div className="completion-modal">
+                        <div className="completion-icon">🎉</div>
+                        <h2 className="completion-title">모든 문제 풀이를 마쳤어요</h2>
+                        <p className="completion-subtitle">학습 결과를 확인해보세요</p>
+
+                        <div className="completion-stats">
+                            <div className="completion-stat-row">
+                                <span className="stat-label">풀이 시간</span>
+                                <span className="stat-value">{formatTime(learningStats.totalTime)}</span>
+                            </div>
+                            <div className="completion-stat-row">
+                                <span className="stat-label">정답 수</span>
+                                <span className="stat-value">{learningStats.correctCount}</span>
+                            </div>
+                            <div className="completion-stat-row">
+                                <span className="stat-label">오답 수</span>
+                                <span className="stat-value">{learningStats.wrongCount}</span>
+                            </div>
+                            <div className="completion-stat-row">
+                                <span className="stat-label">오프너 분석 수</span>
+                                <span className="stat-value">{learningStats.analysisCount}</span>
+                            </div>
+                        </div>
+
+                        <button className="completion-dashboard-btn" onClick={() => navigate('/dashboard')}>
+                            대시보드로 이동하기
+                        </button>
                     </div>
                 </div>
             )}

@@ -886,3 +886,189 @@
     background: var(--danger-200);
     color: var(--danger-600);
 }
+/* Variation Explanation */
+.variation-explanation {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--neutral-50);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-600);
+}
+
+.variation-explanation-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.variation-explanation-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--neutral-900);
+    white-space: pre-line;
+}
+
+/* Variation Back Button */
+.variation-back-btn {
+    width: 100%;
+    height: 48px;
+    margin-top: 20px;
+    background: var(--primary-600);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.variation-back-btn:hover {
+    background: #008C85;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 179, 171, 0.3);
+}
+
+.variation-back-btn:active {
+    transform: translateY(0);
+}
+
+/* Completion Modal */
+.completion-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(6px);
+}
+
+.completion-modal {
+    background: var(--white);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 480px;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+}
+
+.completion-icon {
+    font-size: 72px;
+    animation: celebration 0.6s ease-in-out;
+}
+
+@keyframes celebration {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.2) rotate(-10deg);
+    }
+    75% {
+        transform: scale(1.2) rotate(10deg);
+    }
+}
+
+.completion-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin: 0;
+    text-align: center;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.completion-subtitle {
+    font-size: 16px;
+    color: var(--neutral-600);
+    margin: -12px 0 0;
+    text-align: center;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.completion-stats {
+    width: 100%;
+    background: var(--neutral-50);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.completion-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.completion-stat-row .stat-label {
+    font-size: 15px;
+    color: var(--neutral-600);
+    font-weight: 500;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.completion-stat-row .stat-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.completion-dashboard-btn {
+    width: 100%;
+    height: 52px;
+    background: var(--primary-600);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.completion-dashboard-btn:hover {
+    background: #008C85;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 179, 171, 0.35);
+}
+
+.completion-dashboard-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    .completion-modal {
+        padding: 40px 32px;
+    }
+
+    .completion-icon {
+        font-size: 64px;
+    }
+
+    .completion-title {
+        font-size: 22px;
+    }
+
+    .completion-subtitle {
+        font-size: 15px;
+    }
+}
