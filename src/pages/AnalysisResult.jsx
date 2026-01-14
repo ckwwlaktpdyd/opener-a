@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import MathText from '../components/MathText';
 import './AnalysisResult.css';
 
 // AI 응답 시뮬레이션 데이터
@@ -231,7 +232,7 @@ f'(x) = 0이 되는 점은 x = 0, x = 2입니다.
                     {/* Passage Area */}
                     <div className="passage-section">
                         <div className="passage-box filled">
-                            <p className="passage-content">{problem.passage}</p>
+                            <p className="passage-content"><MathText>{problem.passage}</MathText></p>
                         </div>
                     </div>
 
@@ -240,21 +241,21 @@ f'(x) = 0이 되는 점은 x = 0, x = 2입니다.
                         <div className="answer-box filled">
                             <div className="question-row">
                                 <span className="question-label">문제</span>
-                                <p className="question-text">{problem.question}</p>
+                                <p className="question-text"><MathText>{problem.question}</MathText></p>
                             </div>
                             <div className="submitted-answer-row">
                                 <div className="answer-comparison">
                                     <div className="answer-item">
                                         <span className="answer-label">제출한 답</span>
                                         <span className={`answer-value ${!isCorrect ? 'wrong' : 'correct'}`}>
-                                            {userAnswer}번: {getUserChoiceText()}
+                                            {userAnswer}번: <MathText>{getUserChoiceText()}</MathText>
                                         </span>
                                     </div>
                                     {!isCorrect && (
                                         <div className="answer-item">
                                             <span className="answer-label">정답</span>
                                             <span className="answer-value correct">
-                                                {problem.correctAnswer}번: {getCorrectChoiceText()}
+                                                {problem.correctAnswer}번: <MathText>{getCorrectChoiceText()}</MathText>
                                             </span>
                                         </div>
                                     )}
@@ -279,7 +280,7 @@ f'(x) = 0이 되는 점은 x = 0, x = 2입니다.
                         <div className="chat-messages">
                             {chatMessages.map((msg, index) => (
                                 <div key={index} className={`chat-message ${msg.type}`}>
-                                    <p>{msg.text}</p>
+                                    <p><MathText>{msg.text}</MathText></p>
                                 </div>
                             ))}
                             {isTyping && (
@@ -338,11 +339,11 @@ f'(x) = 0이 되는 점은 x = 0, x = 2입니다.
                                 <h3 className="variation-title">Q1. ({variationProblem.subject})</h3>
 
                                 <div className="variation-passage-box">
-                                    <p>{variationProblem.passage}</p>
+                                    <p><MathText>{variationProblem.passage}</MathText></p>
                                 </div>
 
                                 <div className="variation-question-box">
-                                    <p>{variationProblem.question}</p>
+                                    <p><MathText>{variationProblem.question}</MathText></p>
                                 </div>
                             </div>
 
@@ -373,7 +374,7 @@ f'(x) = 0이 되는 점은 x = 0, x = 2입니다.
                                             onClick={() => !variationSubmitted && setSelectedVariationAnswer(choice.id)}
                                             disabled={variationSubmitted}
                                         >
-                                            {choice.text}
+                                            <MathText>{choice.text}</MathText>
                                         </button>
                                     ))}
                                 </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sampleProblems } from '../data/mockData';
+import MathText from '../components/MathText';
 import './ProblemSolve.css';
 
 // AI 답변 템플릿
@@ -208,7 +209,7 @@ export default function ProblemSolve() {
                             </div>
                         </div>
                         <div className="problem-content">
-                            <p className="problem-text">{currentProblem.question}</p>
+                            <p className="problem-text"><MathText>{currentProblem.question}</MathText></p>
                         </div>
                         {isSubmitted && isCorrect && (
                             <div className="result-banner correct">
@@ -242,7 +243,7 @@ export default function ProblemSolve() {
                                             {isSubmitted && cor && <span>✓</span>}
                                             {inc && <span>✕</span>}
                                         </div>
-                                        <span>{c.text}</span>
+                                        <span><MathText>{c.text}</MathText></span>
                                     </button>
                                 );
                             })}
@@ -268,8 +269,8 @@ export default function ProblemSolve() {
                     <div className="ai-content">
                         {showAnalysis && chatHistory.map((msg, idx) => (
                             <div key={idx} className={`chat-msg ${msg.type}`}>
-                                {msg.title && <div className="msg-title">{msg.title}</div>}
-                                <div className="msg-text">{msg.text}</div>
+                                {msg.title && <div className="msg-title"><MathText>{msg.title}</MathText></div>}
+                                <div className="msg-text"><MathText>{msg.text}</MathText></div>
                                 {msg.time && <div className="msg-time">{msg.time}</div>}
                             </div>
                         ))}
@@ -322,7 +323,7 @@ export default function ProblemSolve() {
                             </div>
                         </div>
                         <div className="variation-modal-body">
-                            <p className="variation-question">{currentProblem.variationProblem.question}</p>
+                            <p className="variation-question"><MathText>{currentProblem.variationProblem.question}</MathText></p>
 
                             <div className="variation-section-title">답안 선택</div>
                             <div className="variation-choices">
@@ -340,7 +341,7 @@ export default function ProblemSolve() {
                                                 {variationSubmitted && cor && <span>✓</span>}
                                                 {inc && <span>✕</span>}
                                             </div>
-                                            <span>{c.text}</span>
+                                            <span><MathText>{c.text}</MathText></span>
                                         </button>
                                     );
                                 })}
@@ -358,7 +359,7 @@ export default function ProblemSolve() {
                                         <div className="variation-explanation">
                                             <div className="variation-explanation-title">📝 해설</div>
                                             <div className="variation-explanation-content">
-                                                {currentProblem.variationProblem.explanation}
+                                                <MathText>{currentProblem.variationProblem.explanation}</MathText>
                                             </div>
                                         </div>
                                     )}

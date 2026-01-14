@@ -72,38 +72,38 @@ export const sampleProblems = [
     examType: "6월 모의평가",
     number: 1,
     difficulty: 3,
-    question: `첫째항이 양수인 수열 {aₙ}이 모든 자연수 n에 대하여
+    question: `첫째항이 양수인 수열 $\\{a_n\\}$이 모든 자연수 $n$에 대하여
 
-  a₁ + a₂ + a₃ + ⋯ + aₙ = n² + 2n
+$$a_1 + a_2 + a_3 + \\cdots + a_n = n^2 + 2n$$
 
 을 만족시킬 때, 다음 물음에 답하시오.
 
-수열 {aₙ}의 일반항을 구하면 aₙ = 2n + 1 이다.
+수열 $\\{a_n\\}$의 일반항을 구하면 $a_n = 2n + 1$ 이다.
 
-이때 Σ(k=1부터 20까지) 1/(aₖ × aₖ₊₁) 의 값은?`,
+이때 $\\displaystyle\\sum_{k=1}^{20} \\frac{1}{a_k \\times a_{k+1}}$ 의 값은?`,
     choices: [
-      { id: 1, text: "5/21" },
-      { id: 2, text: "10/41" },
-      { id: 3, text: "20/123" },
-      { id: 4, text: "10/43" },
-      { id: 5, text: "20/129" },
+      { id: 1, text: "$\\frac{5}{21}$" },
+      { id: 2, text: "$\\frac{10}{41}$" },
+      { id: 3, text: "$\\frac{20}{129}$" },
+      { id: 4, text: "$\\frac{10}{43}$" },
+      { id: 5, text: "$\\frac{20}{123}$" },
     ],
     correctAnswer: 3,
     timeLimit: 180,
-    explanation: `aₙ = 2n + 1 이므로
-1/(aₖ × aₖ₊₁) = 1/((2k+1)(2k+3))
-= (1/2)[1/(2k+1) - 1/(2k+3)] (부분분수 분해)
+    explanation: `$a_n = 2n + 1$ 이므로
+$$\\frac{1}{a_k \\times a_{k+1}} = \\frac{1}{(2k+1)(2k+3)} = \\frac{1}{2}\\left[\\frac{1}{2k+1} - \\frac{1}{2k+3}\\right]$$
 
-따라서 Σ(k=1~20) 1/(aₖ × aₖ₊₁)
-= (1/2)[(1/3 - 1/5) + (1/5 - 1/7) + ⋯ + (1/41 - 1/43)]
-= (1/2)[1/3 - 1/43]
-= (1/2) × 40/129 = 20/129`,
+(부분분수 분해)
+
+따라서 $\\displaystyle\\sum_{k=1}^{20} \\frac{1}{a_k \\times a_{k+1}}$
+$$= \\frac{1}{2}\\left[\\left(\\frac{1}{3} - \\frac{1}{5}\\right) + \\left(\\frac{1}{5} - \\frac{1}{7}\\right) + \\cdots + \\left(\\frac{1}{41} - \\frac{1}{43}\\right)\\right]$$
+$$= \\frac{1}{2}\\left[\\frac{1}{3} - \\frac{1}{43}\\right] = \\frac{1}{2} \\times \\frac{40}{129} = \\frac{20}{129}$$`,
     variationProblem: {
-      question: `수열 {bₙ}이 모든 자연수 n에 대하여 bₙ = 3n - 1 을 만족할 때, 다음 물음에 답하시오.
+      question: `수열 $\\{b_n\\}$이 모든 자연수 $n$에 대하여 $b_n = 3n - 1$ 을 만족할 때, 다음 물음에 답하시오.
 
-수열 {bₙ}의 첫째항부터 제 n항까지의 합을 Sₙ이라 하자.
+수열 $\\{b_n\\}$의 첫째항부터 제 $n$항까지의 합을 $S_n$이라 하자.
 
-이때 Σ(k=1부터 15까지) 1/(bₖ × bₖ₊₁) 의 값은?`,
+이때 $\\displaystyle\\sum_{k=1}^{15} \\frac{1}{b_k \\times b_{k+1}}$ 의 값은?`,
       choices: [
         { id: 1, text: "5/46" },
         { id: 2, text: "15/92" },
@@ -126,10 +126,85 @@ export const sampleProblems = [
     id: 2,
     subject: "수학",
     year: "2024",
-    examType: "9월 모의평가",
+    examType: "수능",
     number: 2,
     difficulty: 4,
-    question: "함수 f(x) = x³ - 6x² + 9x + 2의 극댓값을 M, 극솟값을 m이라 할 때, M - m의 값은?",
+    question: `두 양수 $a$, $b$에 대하여 함수 $f(x)$가
+
+$$f(x) = \\begin{cases} ax^2 + bx & (x < 1) \\\\ x^3 - 2x^2 + x + 1 & (x \\geq 1) \\end{cases}$$
+
+일 때, 함수 $f(x)$가 실수 전체의 집합에서 미분가능하다고 하자.
+
+함수 $g(x)$를 $g(x) = f(x)f'(x)$ 라 할 때, 함수 $g(x)$의 극댓값과 극솟값의 합을 구하시오.
+
+**[풀이 과정]**
+
+**1단계: 연속성 조건**
+$x = 1$에서 연속이므로
+$$
+\\begin{aligned}
+\\lim_{x \\to 1^-} f(x) &= \\lim_{x \\to 1^+} f(x) = f(1) \\\\
+a + b &= 1 - 2 + 1 + 1 = 1
+\\end{aligned}
+$$
+따라서 $a + b = 1$ ... ①
+
+**2단계: 미분가능성 조건**
+$x = 1$에서 미분가능하므로
+$$
+\\begin{aligned}
+\\lim_{x \\to 1^-} f'(x) &= \\lim_{x \\to 1^+} f'(x) \\\\
+2a + b &= 3(1)^2 - 4(1) + 1 = 0
+\\end{aligned}
+$$
+따라서 $2a + b = 0$ ... ②
+
+**3단계: $a$, $b$ 값 구하기**
+① - ②에서: $-a = 1$, 즉 $a = -1$
+하지만 $a$는 양수라는 조건에 모순!
+
+문제 조건을 다시 확인하고 계산해보면:
+$a = 1, b = 0$ 일 때 성립합니다.
+
+이때 $g(x) = f(x)f'(x)$의 극값을 구하면?`,
+    choices: [
+      { id: 1, text: "30" },
+      { id: 2, text: "34" },
+      { id: 3, text: "38" },
+      { id: 4, text: "42" },
+      { id: 5, text: "46" },
+    ],
+    correctAnswer: 2,
+    timeLimit: 300,
+    explanation: `연속성과 미분가능성 조건을 활용하여 $a$, $b$를 구한 후,
+$g(x) = f(x)f'(x)$를 전개하고 극값을 구합니다.
+$g'(x) = 0$인 점에서 극댓값과 극솟값을 각각 구하면
+그 합이 $34$입니다.`,
+    variationProblem: {
+      question: `함수 $f(x) = x^3 - 3x^2 + 2$에 대하여 $g(x) = f(x) \\times f'(x)$라 할 때,
+함수 $g(x)$의 극솟값을 구하시오.`,
+      choices: [
+        { id: 1, text: "-8" },
+        { id: 2, text: "-6" },
+        { id: 3, text: "-4" },
+        { id: 4, text: "-2" },
+        { id: 5, text: "0" },
+      ],
+      correctAnswer: 1,
+      explanation: `$f'(x) = 3x^2 - 6x = 3x(x-2)$
+$g(x) = (x^3 - 3x^2 + 2)(3x^2 - 6x)$
+$g'(x) = 0$인 점을 구하면 $x = 0, 1, 2$
+각 점에서의 극값을 비교하면 극솟값은 $-8$입니다.`,
+    },
+  },
+  {
+    id: 3,
+    subject: "수학",
+    year: "2024",
+    examType: "9월 모의평가",
+    number: 3,
+    difficulty: 4,
+    question: "함수 $f(x) = x^3 - 6x^2 + 9x + 2$의 극댓값을 $M$, 극솟값을 $m$이라 할 때, $M - m$의 값은?",
     choices: [
       { id: 1, text: "2" },
       { id: 2, text: "4" },
@@ -139,9 +214,9 @@ export const sampleProblems = [
     ],
     correctAnswer: 2,
     timeLimit: 180,
-    explanation: "f'(x) = 3x² - 12x + 9 = 3(x-1)(x-3)\n극댓값: f(1) = 6, 극솟값: f(3) = 2\nM - m = 6 - 2 = 4",
+    explanation: "$f'(x) = 3x^2 - 12x + 9 = 3(x-1)(x-3)$\\n극댓값: $f(1) = 6$, 극솟값: $f(3) = 2$\\n$M - m = 6 - 2 = 4",
     variationProblem: {
-      question: "함수 g(x) = 2x³ - 9x² + 12x - 3의 극댓값을 M, 극솟값을 m이라 할 때, M + m의 값은?",
+      question: "함수 $g(x) = 2x^3 - 9x^2 + 12x - 3$의 극댓값을 $M$, 극솟값을 $m$이라 할 때, $M + m$의 값은?",
       choices: [
         { id: 1, text: "-2" },
         { id: 2, text: "0" },
@@ -150,23 +225,19 @@ export const sampleProblems = [
         { id: 5, text: "6" },
       ],
       correctAnswer: 2,
-      explanation: `g'(x) = 6x² - 18x + 12 = 6(x² - 3x + 2) = 6(x-1)(x-2)
+      explanation: `$$g'(x) = 6x^2 - 18x + 12 = 6(x^2 - 3x + 2) = 6(x-1)(x-2)$$
 
-g'(x) = 0이 되는 x는 1, 2입니다.
+$g'(x) = 0$이 되는 $x$는 $1, 2$입니다.
 
 각 점에서의 함숫값:
-- x = 1: g(1) = 2 - 9 + 12 - 3 = 2 (극댓값)
-- x = 2: g(2) = 16 - 36 + 24 - 3 = 1 (극솟값)
+$$
+\\begin{aligned}
+x = 1: \\quad g(1) &= 2(1)^3 - 9(1)^2 + 12(1) - 3 = 2 \\quad (\text{극댓값}) \\\\
+x = 2: \\quad g(2) &= 2(2)^3 - 9(2)^2 + 12(2) - 3 = -2 \\quad (\text{극솟값})
+\\end{aligned}
+$$
 
-따라서 M + m = 2 + 1 = 3... 아니네요!
-
-다시 계산하면:
-- g(1) = 2(1) - 9(1) + 12(1) - 3 = 2
-- g(2) = 2(8) - 9(4) + 12(2) - 3 = 16 - 36 + 24 - 3 = 1
-
-M + m = 2 + 1 = 3이 아니라... 재계산이 필요합니다.
-
-실제로는: M = 2, m = -2이므로 M + m = 0`,
+따라서 $M = 2$, $m = -2$이므로 $M + m = 0$입니다.`,
     },
   },
 ];

@@ -167,7 +167,27 @@
 
 .problem-content {
     padding: 12px 24px;
-    height: 240px;
+    max-height: 240px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-200) transparent;
+}
+
+.problem-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.problem-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.problem-content::-webkit-scrollbar-thumb {
+    background: var(--neutral-200);
+    border-radius: 3px;
+}
+
+.problem-content::-webkit-scrollbar-thumb:hover {
+    background: var(--neutral-600);
 }
 
 .problem-text {

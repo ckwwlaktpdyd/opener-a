@@ -1,0 +1,39 @@
+.math-text {
+  display: inline;
+}
+
+.math-block {
+  margin: 16px 0;
+  text-align: center;
+  max-width: 100%;
+  /* 스크롤바 없이 자연스럽게 표시 */
+}
+
+.math-inline {
+  display: inline;
+  margin: 0 2px;
+}
+
+/* Ensure KaTeX renders properly */
+.math-text .katex {
+  font-size: 1em;
+}
+
+.math-block .katex-display {
+  margin: 0;
+  display: inline-block;
+  max-width: 100%;
+  /* 스크롤바 제거 - aligned 환경으로 줄바꿈 처리 */
+}
+
+/* 작은 화면에서 폰트 조정 */
+@media (max-width: 768px) {
+  .math-block {
+    font-size: 0.9em;
+  }
+
+  .math-block .katex-display {
+    text-align: left;
+    padding: 8px;
+  }
+}
