@@ -211,23 +211,25 @@ export default function ProblemSolve() {
                         <div className="problem-content">
                             <p className="problem-text"><MathText>{currentProblem.question}</MathText></p>
                         </div>
-                        {isSubmitted && isCorrect && (
-                            <div className="result-banner correct">
-                                <div className="result-icon correct">✓</div>
-                                <span>정답입니다.</span>
-                            </div>
-                        )}
-                        {isSubmitted && !isCorrect && (
-                            <div className="result-banner incorrect">
-                                <div className="result-icon incorrect">✕</div>
-                                <span>오답입니다.</span>
-                            </div>
-                        )}
                     </div>
 
                     {/* Answer Card */}
                     <div className="answer-card">
-                        <div className="answer-title">답안 선택</div>
+                        <div className="answer-title-row">
+                            <div className="answer-title">답안 선택</div>
+                            {isSubmitted && isCorrect && (
+                                <div className="result-badge correct">
+                                    <div className="result-icon-small correct">✓</div>
+                                    <span>정답입니다</span>
+                                </div>
+                            )}
+                            {isSubmitted && !isCorrect && (
+                                <div className="result-badge incorrect">
+                                    <div className="result-icon-small incorrect">✕</div>
+                                    <span>오답입니다</span>
+                                </div>
+                            )}
+                        </div>
                         <div className="answer-choices">
                             {currentProblem.choices.map((c) => {
                                 const sel = selectedAnswer === c.id;
