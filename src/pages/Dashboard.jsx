@@ -72,7 +72,7 @@ export default function Dashboard() {
                                     <span className="card-label">총 학습 시간</span>
                                 </div>
                                 <div className="stat-content">
-                                    <div className="stat-value">12h 30m</div>
+                                    <div className="stat-value">3일 12시간 30분</div>
                                     <div className="stat-description">어제보다 30분 더 공부했어요!</div>
                                 </div>
                             </div>

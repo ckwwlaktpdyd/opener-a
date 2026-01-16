@@ -254,9 +254,19 @@ export default function ProblemSolve() {
                     {!isSubmitted ? (
                         <button className={`submit-btn ${selectedAnswer ? 'active' : ''}`} onClick={() => selectedAnswer && setIsSubmitted(true)} disabled={!selectedAnswer}>답안제출</button>
                     ) : !showAnalysis ? (
-                        <button className="analysis-btn" onClick={handleAnalysisClick}><span className="btn-icon">📊</span>오프너 분석 보기</button>
+                        <div className="button-row">
+                            <button className="analysis-btn" onClick={handleAnalysisClick}><span className="btn-icon">📊</span>오프너 분석 보기</button>
+                            <button className={`circular-next inline ${isSubmitted ? 'active' : ''}`} onClick={handleNextProblem} disabled={!isSubmitted}>
+                                <span>{currentProblemIndex < sampleProblems.length - 1 ? '다음' : '학습종료'}</span><span className="arrow">›</span>
+                            </button>
+                        </div>
                     ) : (
-                        <button className={`variation-btn ${isCorrect ? 'disabled' : ''}`} onClick={handleVariationClick} disabled={isCorrect}>📝 변형 문제 풀어보기</button>
+                        <div className="button-row">
+                            <button className={`variation-btn ${isCorrect ? 'disabled' : ''}`} onClick={handleVariationClick} disabled={isCorrect}>📝 변형 문제 풀어보기</button>
+                            <button className={`circular-next inline ${isSubmitted ? 'active' : ''}`} onClick={handleNextProblem} disabled={!isSubmitted}>
+                                <span>{currentProblemIndex < sampleProblems.length - 1 ? '다음' : '학습종료'}</span><span className="arrow">›</span>
+                            </button>
+                        </div>
                     )}
                 </div>
 
@@ -290,11 +300,6 @@ export default function ProblemSolve() {
                         {showAnalysis && <div className="ai-disclaimer">AI 답변은 오류가 있을 수 있으니 교차 검증을 권장합니다.</div>}
                     </div>
                 </div>
-
-                {/* Next Button */}
-                <button className={`circular-next ${isSubmitted ? 'active' : ''}`} onClick={handleNextProblem} disabled={!isSubmitted}>
-                    <span>{currentProblemIndex < sampleProblems.length - 1 ? '다음' : '완료'}</span><span className="arrow">›</span>
-                </button>
             </div>
 
             {/* Variation Loading Screen */}

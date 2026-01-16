@@ -6,7 +6,7 @@
 .dashboard-main {
     max-width: none;
     margin: 0;
-    padding: 114px 40px 40px;
+    padding: 114px 100px 40px;
 }
 
 /* Welcome Section */
@@ -15,7 +15,7 @@
     align-items: flex-start;
     gap: 24px;
     margin: 0 auto 56px;
-    max-width: 1196px;
+    max-width: 1520px;
 }
 
 .welcome-avatar {
@@ -56,11 +56,11 @@
 /* Dashboard Grid */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 792px 380px;
-    gap: 24px;
+    grid-template-columns: 1000px 480px;
+    gap: 40px;
     margin: 0 auto;
-    max-width: 1196px;
-    /* 792 + 380 + 24 gap */
+    max-width: 1520px;
+    /* 1000 + 480 + 40 gap */
 }
 
 /* Left Column */

@@ -6,9 +6,9 @@
 
 .analysis-content {
     display: flex;
-    gap: 24px;
-    padding: 90px 40px 40px;
-    max-width: 1400px;
+    gap: 32px;
+    padding: 90px 100px 40px;
+    max-width: 1720px;
     margin: 0 auto;
     min-height: calc(100vh - 60px);
 }
@@ -249,7 +249,7 @@
 
 .variation-btn {
     padding: 14px 28px;
-    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    background: #00B3AB;
     color: #ffffff;
     border: none;
     border-radius: 12px;
@@ -257,14 +257,14 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+    box-shadow: 0 4px 12px rgba(0, 179, 171, 0.25);
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .variation-btn:hover {
-    background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+    background: #008C85;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+    box-shadow: 0 8px 20px rgba(0, 179, 171, 0.35);
 }
 
 .variation-btn:active {
@@ -321,6 +321,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -503,10 +504,13 @@
 }
 
 @keyframes bubblePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.6;
         transform: translateX(-50%) scale(0.95);
     }
+
     50% {
         opacity: 1;
         transform: translateX(-50%) scale(1);
@@ -519,9 +523,12 @@
 }
 
 @keyframes robotBounce {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-12px);
     }
