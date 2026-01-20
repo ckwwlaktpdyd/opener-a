@@ -21,8 +21,8 @@ export default function TopNav() {
             <div className="nav-container">
                 <div className="nav-left">
                     <Link to="/dashboard" className="logo">
-                        <svg className="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="6" width="18" height="12" rx="6" fill="#15A9A1" />
+                        <svg className="logo-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32">
+                            <path fill="#15A9A1" d="M11.07 0C4.96 0 0 4.96 0 11.07c0 3.11 1.28 5.91 3.35 7.92l9.67 9.67c2.01 2.06 4.81 3.35 7.92 3.35 6.11 0 11.07-4.96 11.07-11.07 0-3.11-1.28-5.91-3.34-7.92l-9.68-9.68A11.04 11.04 0 0 0 11.07 0ZM5.33 8.43c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1-1.71 0-3.1-1.39-3.1-3.1Zm23.44 11.9c0 4.66-3.78 8.44-8.44 8.44-3.19 0-5.96-1.77-7.4-4.38-.33-.61-.66-1.9.37-2.93l8.16-8.16c1.03-1.03 2.33-.7 2.93-.37a8.443 8.443 0 0 1 4.38 7.4Z" />
                         </svg>
                         <span className="logo-text">오프너</span>
                     </Link>

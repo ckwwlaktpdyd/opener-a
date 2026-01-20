@@ -43,6 +43,9 @@
     animation: none;
     transition: none;
     display: block;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .logo-text {

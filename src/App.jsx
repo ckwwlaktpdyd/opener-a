@@ -8,6 +8,7 @@ import ProblemSolve from './pages/ProblemSolve';
 import AnalysisResult from './pages/AnalysisResult';
 import ChatPrompt from './pages/ChatPrompt';
 import Scrapbook from './pages/Scrapbook';
+import ScrapbookDetail from './pages/ScrapbookDetail';
 import MyPage from './pages/MyPage';
 import './index.css';
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/analysis" element={<AnalysisResult />} />
         <Route path="/chat" element={<ChatPrompt />} />
         <Route path="/scrapbook" element={<Scrapbook />} />
+        <Route path="/scrapbook/detail" element={<ScrapbookDetail />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

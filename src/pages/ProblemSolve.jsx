@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sampleProblems } from '../data/mockData';
 import MathText from '../components/MathText';
+import AITutorIcon from '../components/icons/AITutorIcon';
 import './ProblemSolve.css';
 
 // AI 답변 템플릿
@@ -52,6 +53,7 @@ export default function ProblemSolve() {
     const [showAnalysis, setShowAnalysis] = useState(false);
     const [chatInput, setChatInput] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
+    const [messageCounter, setMessageCounter] = useState(0); // UT용 메시지 카운터
 
     // Variation problem states
     const [showVariationLoading, setShowVariationLoading] = useState(false);
@@ -74,17 +76,82 @@ export default function ProblemSolve() {
     const handleSendMessage = () => {
         if (!chatInput.trim() || !showAnalysis) return;
 
-        const userMsg = { type: 'user', text: chatInput, time: '오전 ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) };
-        setChatHistory(prev => [...prev, userMsg]);
-        const userQuestion = chatInput;
-        setChatInput('');
+        const currentCount = messageCounter;
+        setMessageCounter(prev => prev + 1);
 
-        // AI response based on problem
-        setTimeout(() => {
-            const aiResponseText = getAIResponseForProblem(currentProblem.id, userQuestion);
-            const aiResponse = { type: 'ai', text: aiResponseText, time: '오전 ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) };
-            setChatHistory(prev => [...prev, aiResponse]);
-        }, 1000);
+        // UT용 미리 정의된 시나리오
+        const utScenario = [
+            {
+                user: '나는 이런 문제 수열 조건이랑 집합 조건이 같이 나오는 유형을 자주 틀리는데, 어디서 잘못 생각했는지 잘 모르겠어. 연습장에 푼 사진을 올릴게.',
+                ai: `풀이 과정을 보니,\n\n✅ aₙ = aₙ₊₁이 되는 조건만 먼저 확인하고\n✅ 집합 A와 B의 교집합 개수 조건을 나중에 적용한 점에서 오류가 생겼어요.\n\n이 문제에서 핵심은\n(n(A ∩ B) = 3) 이라는 조건이 어떤 항들이 같아야 하는지 먼저 정해주는 거예요.\n\n👉 그런데 왜\naₙ = aₙ₊₁만 보고\n34가 나온다고 판단했는지,\n생각 과정을 조금 더 설명해 줄 수 있을까요?`,
+                hasImage: true
+            },
+            {
+                user: '수열에서 값이 반복되면 교집합이 생긴다고 생각해서 aₙ = aₙ₊₁ 인 경우만 찾으면 된다고 봤어.',
+                ai: `좋은 접근이었어요.\n다만 이 문제에서는 "반복" 자체보다,\n"A와 B에 동시에 속하는 항의 개수"가 핵심이에요.\n\n🔎 개념 정리\n\n집합 A, B가 수열의 항들로 구성될 때\nn(A ∩ B) = 3 이라는 건\n👉 두 집합에 동시에 포함되는 서로 다른 항이 정확히 3개라는 뜻이에요.\n\n즉,\n단순히 값이 같아지는 순간만 보는 게 아니라,\n어떤 항들이 A와 B에 공통으로 포함되는지를 먼저 정해야 해요.\n\n다음에는 이런 순서로 생각해보면 좋아요\n\n👉 교집합 조건이 "항의 개수"를 말하는지\n👉 그 항들이 어떤 값인지\n👉 그 다음에 수열의 규칙 적용하기`,
+                showVariationBtn: true
+            }
+        ];
+
+        if (currentCount < utScenario.length) {
+            const scenario = utScenario[currentCount];
+
+            // 사용자 메시지 추가
+            const userMsg = {
+                type: 'user',
+                text: scenario.user,
+                time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+            };
+            setChatHistory(prev => [...prev, userMsg]);
+
+            // 이미지가 있다면 추가
+            if (scenario.hasImage) {
+                setTimeout(() => {
+                    const imageMsg = {
+                        type: 'user',
+                        image: new URL('../assets/sample-handwriting.png', import.meta.url).href,
+                        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                    };
+                    setChatHistory(prev => [...prev, imageMsg]);
+
+                    // AI 응답
+                    setTimeout(() => {
+                        const aiResponse = {
+                            type: 'ai',
+                            text: scenario.ai,
+                            time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                        };
+                        setChatHistory(prev => [...prev, aiResponse]);
+                    }, 1000);
+                }, 500);
+            } else {
+                // AI 응답
+                setTimeout(() => {
+                    const aiResponse = {
+                        type: 'ai',
+                        text: scenario.ai,
+                        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                    };
+                    setChatHistory(prev => [...prev, aiResponse]);
+
+                    // 변형문제 버튼 표시
+                    if (scenario.showVariationBtn) {
+                        setTimeout(() => {
+                            const variationMsg = {
+                                type: 'action',
+                                actionType: 'variation',
+                                text: '변형 문제 풀어보기',
+                                description: '이제 같은 사고 흐름으로\n변형 문제를 하나 풀어보면서 연습해 볼까요?',
+                                time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                            };
+                            setChatHistory(prev => [...prev, variationMsg]);
+                        }, 1000);
+                    }
+                }, 1000);
+            }
+        }
+
+        setChatInput('');
     };
 
     const handleVariationClick = () => {
@@ -161,8 +228,8 @@ export default function ProblemSolve() {
             setTimeout(() => {
                 const initialMessage = {
                     type: 'ai',
-                    text: `${selectedAnswer}번을 선택했네요. 정답은 ${currentProblem.correctAnswer}번이에요.\n\n왜 ${selectedAnswer}번이 정답이라고 생각했나요? 어떤 근거로 그렇게 판단했는지 설명해주세요.`,
-                    time: '오전 ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                    text: `${selectedAnswer}번을 선택했네요.\n\n왜 이 답을 선택했는지 궁금해요.\n\n풀이 과정을 텍스트, 음성, 사진 업로드 중 편한 방식으로 공유해 주세요.\n\n어디서 사고가 어긋났는지 함께 찾아볼게요.`,
+                    time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
                 };
                 setChatHistory([initialMessage]);
             }, 300);
@@ -171,7 +238,7 @@ export default function ProblemSolve() {
                 const initialMessage = {
                     type: 'ai',
                     text: '정답이에요! 🎉 혹시 이 문제에 대해 더 궁금한 점이 있으신가요?',
-                    time: '오전 ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                    time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
                 };
                 setChatHistory([initialMessage]);
             }, 300);
@@ -264,7 +331,6 @@ export default function ProblemSolve() {
                         </div>
                     ) : (
                         <div className="button-row">
-                            <button className={`variation-btn ${isCorrect ? 'disabled' : ''}`} onClick={handleVariationClick} disabled={isCorrect}>📝 변형 문제 풀어보기</button>
                             <button className={`circular-next inline ${isSubmitted ? 'active' : ''}`} onClick={handleNextProblem} disabled={!isSubmitted}>
                                 <span>{currentProblemIndex < sampleProblems.length - 1 ? '다음' : '학습종료'}</span><span className="arrow">›</span>
                             </button>
@@ -281,25 +347,60 @@ export default function ProblemSolve() {
                     <div className="ai-content">
                         {showAnalysis && chatHistory.map((msg, idx) => (
                             <div key={idx} className={`chat-msg ${msg.type}`}>
-                                {msg.title && <div className="msg-title"><MathText>{msg.title}</MathText></div>}
-                                <div className="msg-text"><MathText>{msg.text}</MathText></div>
-                                {msg.time && <div className="msg-time">{msg.time}</div>}
+                                {msg.type === 'ai' && (
+                                    <div className="msg-icon">
+                                        <AITutorIcon size={34} />
+                                    </div>
+                                )}
+                                <div className="msg-content">
+                                    {msg.title && <div className="msg-title"><MathText>{msg.title}</MathText></div>}
+                                    {msg.image ? (
+                                        <div className="msg-image">
+                                            <img src={msg.image} alt="User submitted work" />
+                                        </div>
+                                    ) : msg.type === 'action' && msg.actionType === 'variation' ? (
+                                        <div className="variation-wrapper">
+                                            {msg.description && <div className="variation-description"><MathText>{msg.description}</MathText></div>}
+                                            <button className="msg-action-btn" onClick={handleVariationClick}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                                    <path fill="#fff" fillRule="evenodd" d="M13.455 1c.158 0 .313.035.456.1l.137.077.126.096c.078.069.145.15.2.238l.074.14 1.163 2.666a.66.66 0 0 1 .031.43c.015.083.024.167.024.253v10c0 .085-.01.17-.024.252a.66.66 0 0 1-.031.43l-1.163 2.667a1.084 1.084 0 0 1-.993.65h-6.91a1.086 1.086 0 0 1-.994-.65l-1.163-2.666a.661.661 0 0 1-.032-.43A1.497 1.497 0 0 1 4.333 15V5c0-.086.008-.17.023-.254a.661.661 0 0 1 .032-.429L5.551 1.65l.074-.14a1.084 1.084 0 0 1 .92-.51h6.91ZM6.708 17.667h6.583L13.8 16.5H6.2l.508 1.167Zm6.807-7.679a3.31 3.31 0 0 0-1.988 1.5l-.084.15a4.642 4.642 0 0 1-3.891 2.464l-1.886.086V15a.167.167 0 0 0 .167.167h8.333a.167.167 0 0 0 .167-.167V9.77l-.818.218ZM13.2 7.235a3.058 3.058 0 0 0-2.452.994 4.387 4.387 0 0 1-2.562 1.383l-2.52.398v2.843l1.825-.082a3.31 3.31 0 0 0 2.774-1.758A4.642 4.642 0 0 1 13.172 8.7l1.161-.31V7.305l-1.133-.07ZM5.833 4.833A.167.167 0 0 0 5.666 5v3.66l2.311-.364.255-.052a3.055 3.055 0 0 0 1.53-.912 4.392 4.392 0 0 1 3.275-1.436l.246.009 1.05.064V5a.167.167 0 0 0-.167-.166H5.833ZM6.199 3.5H13.8l-.51-1.167H6.708L6.199 3.5Z" clipRule="evenodd" />
+                                                </svg>
+                                                <span className="msg-text"><MathText>{msg.text}</MathText></span>
+                                            </button>
+                                        </div>
+                                    ) : msg.text && (
+                                        <div className="msg-text"><MathText>{msg.text}</MathText></div>
+                                    )}
+                                    {msg.time && <div className="msg-time">{msg.time}</div>}
+                                </div>
                             </div>
                         ))}
                     </div>
                     <div className="ai-footer">
-                        <div className="ai-input-wrap">
-                            <input
-                                type="text"
-                                placeholder="질문을 입력하세요."
-                                value={chatInput}
-                                onChange={(e) => setChatInput(e.target.value)}
-                                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                disabled={!showAnalysis}
-                            />
-                            <button className="ai-send" onClick={handleSendMessage} disabled={!showAnalysis}>▷</button>
+                        <div className="ai-input-row">
+                            <button className="ai-plus-btn" disabled={!showAnalysis}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                </svg>
+                            </button>
+                            <div className="ai-input-wrap">
+                                <input
+                                    type="text"
+                                    placeholder="질문을 입력하세요."
+                                    value={chatInput}
+                                    onChange={(e) => setChatInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                    disabled={!showAnalysis}
+                                />
+                                <button className="ai-mic-btn" disabled={!showAnalysis}>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10 1.25C8.61929 1.25 7.5 2.36929 7.5 3.75V10C7.5 11.3807 8.61929 12.5 10 12.5C11.3807 12.5 12.5 11.3807 12.5 10V3.75C12.5 2.36929 11.3807 1.25 10 1.25Z" stroke="currentColor" strokeWidth="1.5" />
+                                        <path d="M5 9.375C5 9.02982 4.72018 8.75 4.375 8.75C4.02982 8.75 3.75 9.02982 3.75 9.375C3.75 12.2734 6.10156 14.625 9 14.625V16.875H7.5C7.15482 16.875 6.875 17.1548 6.875 17.5C6.875 17.8452 7.15482 18.125 7.5 18.125H12.5C12.8452 18.125 13.125 17.8452 13.125 17.5C13.125 17.1548 12.8452 16.875 12.5 16.875H11V14.625C13.8984 14.625 16.25 12.2734 16.25 9.375C16.25 9.02982 15.9702 8.75 15.625 8.75C15.2798 8.75 15 9.02982 15 9.375C15 11.5842 13.2091 13.375 11 13.375H9C6.79086 13.375 5 11.5842 5 9.375Z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                        {showAnalysis && <div className="ai-disclaimer">AI 답변은 오류가 있을 수 있으니 교차 검증을 권장합니다.</div>}
+                        <div className="ai-disclaimer">AI 답변은 오류가 있을 수 있으니 교차 검증을 권장합니다.</div>
                     </div>
                 </div>
             </div>

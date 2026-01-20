@@ -72,23 +72,23 @@ export const sampleProblems = [
     examType: "6월 모의평가",
     number: 1,
     difficulty: 3,
-    question: `첫째항이 양수인 수열 $\\{a_n\\}$이 모든 자연수 $n$에 대하여
+    question: `두 번째 항이 $-40$이고 공차가 $0$이 아닌 등차수열 $\\{a_n\\}$에 대하여 수열 $\\{b_n\\}$이
 
-$a_1 + a_2 + a_3 + \\cdots + a_n = n^2 + 2n$
+$b_n = a_n + a_{n+1} \\quad (n \\geq 1)$
 
-을 만족시킬 때, 다음 물음에 답하시오.
+이라 하고, 두 집합 $A$, $B$를
 
-수열 $\\{a_n\\}$의 일반항을 구하면 $a_n = 2n + 1$ 이다.
+$A = \\{a_1, a_2, a_3, a_4, a_5\\}, \\quad B = \\{b_1, b_2, b_3, b_4, b_5\\}$
 
-이때 $\\displaystyle\\sum_{k=1}^{20} \\frac{1}{a_k \\times a_{k+1}}$ 의 값은?`,
+라 하자. $n(A \\cap B) = 3$ 이 되도록 하는 모든 수열 $\\{a_n\\}$에 대하여 $a_{20}$의 값의 합은?`,
     choices: [
-      { id: 1, text: "$\\frac{5}{21}$" },
-      { id: 2, text: "$\\frac{10}{41}$" },
-      { id: 3, text: "$\\frac{20}{129}$" },
-      { id: 4, text: "$\\frac{10}{43}$" },
-      { id: 5, text: "$\\frac{20}{123}$" },
+      { id: 1, text: "$30$" },
+      { id: 2, text: "$32$" },
+      { id: 3, text: "$34$" },
+      { id: 4, text: "$36$" },
+      { id: 5, text: "$38$" },
     ],
-    correctAnswer: 3,
+    correctAnswer: 4,
     timeLimit: 180,
     explanation: `$a_n = 2n + 1$ 이므로
 $$\\frac{1}{a_k \\times a_{k+1}} = \\frac{1}{(2k+1)(2k+3)} = \\frac{1}{2}\\left[\\frac{1}{2k+1} - \\frac{1}{2k+3}\\right]$$

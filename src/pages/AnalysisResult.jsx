@@ -1,399 +1,295 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import TopNav from '../components/TopNav';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { sampleProblems } from '../data/mockData';
 import MathText from '../components/MathText';
 import './AnalysisResult.css';
 
-// AI 응답 시뮬레이션 데이터
-const aiResponses = [
-    "좋은 질문이에요! 이 문제의 핵심은 미분을 이용해 극값을 찾는 것입니다. f'(x) = 3x² - 6x = 3x(x-2)를 구하고, f'(x) = 0이 되는 x = 0, 2에서 극값을 가집니다.",
-    "정확해요! x = 0일 때 f(0) = 2 (극댓값), x = 2일 때 f(2) = 8 - 12 + 2 = -2 (극솟값)입니다. 따라서 극댓값과 극솟값의 합은 2 + (-2) = 0이 됩니다.",
-    "추가 질문이 있으시면 언제든 물어보세요! 미분 문제를 더 풀어보시면 실력 향상에 도움이 될 거예요.",
-];
-
-// 변형 문제 데이터 (원본 문제와 연관된)
-const variationProblem = {
-    subject: '수학',
-    number: 1,
-    passage: `다음 물음에 답하시오.
-
-함수 g(x) = 2x³ - 6x + 1에 대하여 다음을 구하시오.`,
-    question: '함수 g(x)가 극솟값을 갖는 x의 값은?',
-    choices: [
-        { id: 1, text: '-2' },
-        { id: 2, text: '-1' },
-        { id: 3, text: '0' },
-        { id: 4, text: '1' },
-        { id: 5, text: '2' },
-    ],
-    correctAnswer: 4,
-    difficulty: '중',
-    reward: '2캔'
-};
-
 export default function AnalysisResult() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const [chatInput, setChatInput] = useState('');
-    const [chatMessages, setChatMessages] = useState([]);
-    const [isTyping, setIsTyping] = useState(false);
-    const [responseIndex, setResponseIndex] = useState(0);
 
-    // 변형문제 관련 상태
-    const [showLoadingModal, setShowLoadingModal] = useState(false);
-    const [showVariationModal, setShowVariationModal] = useState(false);
-    const [selectedVariationAnswer, setSelectedVariationAnswer] = useState(null);
-    const [variationSubmitted, setVariationSubmitted] = useState(false);
-    const [variationTimer, setVariationTimer] = useState(600); // 10분
+    // 문제 1번 데이터 사용
+    const problem = sampleProblems[0];
+    const userAnswer = 32; // 사용자가 선택한 오답
+    const correctAnswer = 36; // 정답
 
-    // 문제 풀이에서 전달받은 데이터
-    const problemData = location.state || {
-        problem: {
-            subject: '수학',
-            number: 1,
-            year: '2024',
-            examType: 'suneung',
-            passage: `다음 물음에 답하시오.
+    // 접힘/펼침 상태
+    const [isProblemExpanded, setIsProblemExpanded] = useState(true);
+    const [isConversationExpanded, setIsConversationExpanded] = useState(false);
+    const [leftColMaxHeight, setLeftColMaxHeight] = useState('none');
 
-함수 f(x) = x³ - 3x² + 2에 대하여 다음을 구하시오.`,
-            question: '함수 f(x)의 극댓값과 극솟값의 합은?',
-            choices: [
-                { id: 1, text: '-2' },
-                { id: 2, text: '0' },
-                { id: 3, text: '2' },
-                { id: 4, text: '4' },
-                { id: 5, text: '6' },
-            ],
-            correctAnswer: 2
+    // 컬럼 refs
+    const rightColRef = useRef(null);
+
+    // 오른쪽 컬럼 높이 기준으로 왼쪽 컬럼 높이 동기화
+    useEffect(() => {
+        const syncHeight = () => {
+            if (rightColRef.current) {
+                const rightHeight = rightColRef.current.offsetHeight;
+                setLeftColMaxHeight(`${rightHeight}px`);
+            }
+        };
+
+        syncHeight();
+        window.addEventListener('resize', syncHeight);
+        return () => window.removeEventListener('resize', syncHeight);
+    }, [isProblemExpanded, isConversationExpanded]);
+
+    // 기출 문제와 대화 과정이 상호 배타적으로 동작하도록 토글 핸들러
+    const handleProblemToggle = () => {
+        setIsProblemExpanded(!isProblemExpanded);
+        if (!isProblemExpanded) {
+            setIsConversationExpanded(false);
+        }
+    };
+
+    const handleConversationToggle = () => {
+        setIsConversationExpanded(!isConversationExpanded);
+        if (!isConversationExpanded) {
+            setIsProblemExpanded(false);
+        }
+    };
+
+    // AI 대화 내역 (ProblemSolve에서 사용된 시나리오)
+    const conversationHistory = [
+        {
+            type: 'ai',
+            text: '32번을 선택했네요.\\n\\n왜 이 답을 선택했는지 궁금해요.\\n\\n풀이 과정을 텍스트, 음성, 사진 업로드 중 편한 방식으로 공유해 주세요.\\n\\n어디서 사고가 어긋났는지 함께 찾아볼게요.'
         },
-        userAnswer: 1,
-        isCorrect: false
-    };
-
-    const { problem, userAnswer, isCorrect } = problemData;
-
-    // 초기 AI 메시지 - 질문만
-    useEffect(() => {
-        let initialMessages = [];
-
-        if (isCorrect) {
-            initialMessages = [
-                { type: 'ai', text: `정답이에요! 🎉 혹시 이 문제에 대해 더 궁금한 점이 있으신가요?` }
-            ];
-        } else {
-            initialMessages = [
-                {
-                    type: 'ai',
-                    text: `${userAnswer}번을 선택했네요. 정답은 ${problem.correctAnswer}번이에요.\n\n왜 ${userAnswer}번이 정답이라고 생각했나요? 어떤 근거로 그렇게 판단했는지 설명해주세요.`
-                }
-            ];
+        {
+            type: 'user',
+            text: '나는 이런 문제 수열 조건이랑 집합 조건이 같이 나오는 유형을 자주 틀리는데, 어디서 잘못 생각했는지 잘 모르겠어. 연습장에 푼 사진을 올릴게.',
+            hasImage: true
+        },
+        {
+            type: 'ai',
+            text: '풀이 과정을 보니,\\n\\n✅ aₙ = aₙ₊₁이 되는 조건만 먼저 확인하고\\n✅ 집합 A와 B의 교집합 개수 조건을 나중에 적용한 점에서 오류가 생겼어요.\\n\\n이 문제에서 핵심은\\n(n(A ∩ B) = 3) 이라는 조건이 어떤 항들이 같아야 하는지 먼저 정해주는 거예요.\\n\\n👉 그런데 왜\\naₙ = aₙ₊₁만 보고\\n34가 나온다고 판단했는지,\\n생각 과정을 조금 더 설명해 줄 수 있을까요?'
+        },
+        {
+            type: 'user',
+            text: '수열에서 값이 반복되면 교집합이 생긴다고 생각해서 aₙ = aₙ₊₁ 인 경우만 찾으면 된다고 봤어.'
+        },
+        {
+            type: 'ai',
+            text: '좋은 접근이었어요.\\n다만 이 문제에서는 "반복" 자체보다,\\n"A와 B에 동시에 속하는 항의 개수"가 핵심이에요.\\n\\n🔎 개념 정리\\n\\n집합 A, B가 수열의 항들로 구성될 때\\nn(A ∩ B) = 3 이라는 건\\n👉 두 집합에 동시에 포함되는 서로 다른 항이 정확히 3개라는 뜻이에요.\\n\\n즉,\\n단순히 값이 같아지는 순간만 보는 게 아니라,\\n어떤 항들이 A와 B에 공통으로 포함되는지를 먼저 정해야 해요.\\n\\n다음에는 이런 순서로 생각해보면 좋아요\\n\\n👉 교집합 조건이 "항의 개수"를 말하는지\\n👉 그 항들이 어떤 값인지\\n👉 그 다음에 수열의 규칙 적용하기'
         }
-
-        setChatMessages(initialMessages);
-    }, []);
-
-    // 변형문제 타이머
-    useEffect(() => {
-        if (showVariationModal && variationTimer > 0 && !variationSubmitted) {
-            const timer = setInterval(() => {
-                setVariationTimer((prev) => prev - 1);
-            }, 1000);
-            return () => clearInterval(timer);
-        }
-    }, [showVariationModal, variationTimer, variationSubmitted]);
-
-    const formatTime = (seconds) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    };
-
-    // 오답 해설 생성
-    const getWrongAnswerExplanation = () => {
-        return `📝 오답 해설
-
-${userAnswer}번 "${problem.choices?.find(c => c.id === userAnswer)?.text}"를 선택하셨네요.
-
-먼저 미분을 구해봅시다:
-f'(x) = 3x² - 6x = 3x(x - 2)
-
-f'(x) = 0이 되는 점은 x = 0, x = 2입니다.
-
-각 점에서의 함수값을 계산하면:
-- f(0) = 0 - 0 + 2 = 2 (극댓값)
-- f(2) = 8 - 12 + 2 = -2 (극솟값)
-
-따라서 극댓값과 극솟값의 합은 2 + (-2) = 0입니다.
-
-정답은 ${problem.correctAnswer}번 "${problem.choices?.find(c => c.id === problem.correctAnswer)?.text}"입니다.
-
-💡 팁: 극값 문제는 미분하여 f'(x) = 0인 점을 찾고, 각 점에서 함수값을 계산하는 것이 핵심입니다!`;
-    };
-
-    const handleSendMessage = () => {
-        if (chatInput.trim() && !isTyping) {
-            const userMessage = chatInput;
-            setChatMessages(prev => [...prev, { type: 'user', text: userMessage }]);
-            setChatInput('');
-            setIsTyping(true);
-
-            setTimeout(() => {
-                let response;
-                if (responseIndex === 0 && !isCorrect) {
-                    response = getWrongAnswerExplanation();
-                } else {
-                    response = aiResponses[responseIndex % aiResponses.length];
-                }
-                setChatMessages(prev => [...prev, { type: 'ai', text: response }]);
-                setResponseIndex(prev => prev + 1);
-                setIsTyping(false);
-            }, 1500);
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSendMessage();
-        }
-    };
-
-    const handleGenerateVariation = () => {
-        setShowLoadingModal(true);
-
-        // 2초 후 로딩 완료하고 변형문제 모달 표시
-        setTimeout(() => {
-            setShowLoadingModal(false);
-            setShowVariationModal(true);
-        }, 2000);
-    };
-
-    const handleVariationSubmit = () => {
-        if (selectedVariationAnswer !== null) {
-            setVariationSubmitted(true);
-        }
-    };
-
-    const handleCloseVariation = () => {
-        setShowVariationModal(false);
-        setSelectedVariationAnswer(null);
-        setVariationSubmitted(false);
-    };
-
-    const getUserChoiceText = () => {
-        const choice = problem.choices?.find(c => c.id === userAnswer);
-        return choice?.text || '선택한 답안';
-    };
-
-    const getCorrectChoiceText = () => {
-        const choice = problem.choices?.find(c => c.id === problem.correctAnswer);
-        return choice?.text || '정답';
-    };
-
-    const getVariationChoiceClass = (choiceId) => {
-        if (!variationSubmitted) {
-            return selectedVariationAnswer === choiceId ? 'selected' : '';
-        }
-        if (choiceId === variationProblem.correctAnswer) {
-            return 'correct';
-        }
-        if (choiceId === selectedVariationAnswer && selectedVariationAnswer !== variationProblem.correctAnswer) {
-            return 'incorrect';
-        }
-        return '';
-    };
+    ];
 
     return (
         <div className="page-wireframe">
-            <TopNav />
+            {/* Header */}
+            <div className="analysis-header">
+                <div className="analysis-header-left">
+                    <button className="analysis-icon-btn" onClick={() => navigate('/scrapbook')}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 48 48">
+                            <rect width="48" height="48" fill="#F4F4F5" rx="24" />
+                            <path fill="#00B3AB" fillRule="evenodd" d="M31.5 18.5A1.5 1.5 0 0 0 30 20v.8c0 .11.09.2.2.2h2.6a.2.2 0 0 0 .2-.2V20a1.5 1.5 0 0 0-1.5-1.5Zm1.5 3.7a.2.2 0 0 0-.2-.2h-2.6a.2.2 0 0 0-.2.2v7.747a1 1 0 0 0 .168.555l1.166 1.748a.2.2 0 0 0 .332 0l1.166-1.748a1 1 0 0 0 .168-.555V22.2Zm-18-5.7v15a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5v-15a1.5 1.5 0 0 0-1.5-1.5h-11a1.5 1.5 0 0 0-1.5 1.5Zm7 3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm.5 1.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4Zm-.5 5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm.5 1.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4ZM18 26v1.5h1.5V26H18Zm-.5-1H20a.5.5 0 0 1 .5.5V28a.5.5 0 0 1-.5.5h-2.5a.5.5 0 0 1-.5-.5v-2.5a.5.5 0 0 1 .5-.5Zm3.354-5.146a.5.5 0 0 0-.707-.707L18.5 20.793l-.646-.646a.5.5 0 0 0-.707.707l1.353 1.353 2.354-2.354Z" clipRule="evenodd" />
+                        </svg>
+                    </button>
+                    <h1 className="analysis-title">2024학년도 6월 모의고사</h1>
+                </div>
+                <div className="analysis-header-right">
+                    <span className="analysis-meta">12번 문항</span>
+                    <span className="analysis-meta">·</span>
+                    <span className="analysis-meta">2025.12.08</span>
+                    <span className="analysis-meta">·</span>
+                    <span className="analysis-score">3점</span>
+                </div>
+            </div>
 
-            <main className="analysis-content">
-                {/* Left Side - Problem Content */}
-                <div className="analysis-left">
-                    {/* Header with problem info */}
-                    <div className="problem-header">
-                        <button className="back-btn" onClick={() => navigate('/problem-solve')}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M19 12H5M12 19l-7-7 7-7" />
+            <main className="analysis-main">
+                {/* Left Column */}
+                <div className="analysis-left-col" style={{ maxHeight: leftColMaxHeight }}>
+                    {/* 기출 문제 (includes 답안 선택) */}
+                    <div className={`analysis-section ${isProblemExpanded ? 'expanded' : ''}`}>
+                        <button
+                            className="section-header"
+                            onClick={handleProblemToggle}
+                        >
+                            <span className="section-title">기출 문제</span>
+                            <svg
+                                className={`chevron ${isProblemExpanded ? 'expanded' : ''}`}
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                            >
+                                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </button>
-                        <div className="problem-meta">
-                            <span className="problem-number">{problem.number}</span>
-                            <span className="problem-title">{problem.year}학년도 {problem.examType === 'suneung' ? '수능' : problem.examType}</span>
-                            <span className="problem-subtitle">{problem.number}번 문항</span>
-                        </div>
-                        <div className="problem-tags">
-                            <span className="tag">독서</span>
-                            <span className="tag difficulty">{isCorrect ? '정답' : '오답'}</span>
-                            <span className="tag time">3분</span>
-                        </div>
-                    </div>
-
-                    {/* Passage Area */}
-                    <div className="passage-section">
-                        <div className="passage-box filled">
-                            <p className="passage-content"><MathText>{problem.passage}</MathText></p>
-                        </div>
-                    </div>
-
-                    {/* Problem and Answer Section */}
-                    <div className="answer-section">
-                        <div className="answer-box filled">
-                            <div className="question-row">
-                                <span className="question-label">문제</span>
-                                <p className="question-text"><MathText>{problem.question}</MathText></p>
+                        {isProblemExpanded && (
+                            <div className="section-content">
+                                <div className="problem-text">
+                                    <MathText>{problem.question}</MathText>
+                                </div>
                             </div>
-                            <div className="submitted-answer-row">
+                        )}
+                    </div>
+
+                    {/* 답안 선택 - visually separate but controlled by problem toggle */}
+                    {isProblemExpanded && (
+                        <div className="analysis-section">
+                            <div className="section-header-static">
+                                <span className="section-title">답안 선택</span>
+                                <span className="answer-status wrong">오답입니다</span>
+                            </div>
+                            <div className="section-content">
                                 <div className="answer-comparison">
-                                    <div className="answer-item">
-                                        <span className="answer-label">제출한 답</span>
-                                        <span className={`answer-value ${!isCorrect ? 'wrong' : 'correct'}`}>
-                                            {userAnswer}번: <MathText>{getUserChoiceText()}</MathText>
-                                        </span>
+                                    <div className="answer-item wrong">
+                                        <span className="answer-icon">✕</span>
+                                        <span className="answer-label">{userAnswer}</span>
                                     </div>
-                                    {!isCorrect && (
-                                        <div className="answer-item">
-                                            <span className="answer-label">정답</span>
-                                            <span className="answer-value correct">
-                                                {problem.correctAnswer}번: <MathText>{getCorrectChoiceText()}</MathText>
-                                            </span>
-                                        </div>
-                                    )}
+                                    <div className="answer-item correct">
+                                        <span className="answer-icon">✓</span>
+                                        <span className="answer-label">{correctAnswer}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
-                    {/* Generate Variation Button */}
-                    <div className="variation-button-container">
-                        <button className="variation-btn" onClick={handleGenerateVariation}>
-                            변형문제 생성
+                    {/* AI 튜터와의 대화 과정 */}
+                    <div className={`analysis-section ${isConversationExpanded ? 'expanded' : ''}`}>
+                        <button
+                            className="section-header"
+                            onClick={handleConversationToggle}
+                        >
+                            <span className="section-title">AI 튜터와의 대화 과정</span>
+                            <svg
+                                className={`chevron ${isConversationExpanded ? 'expanded' : ''}`}
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                            >
+                                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                         </button>
+                        {isConversationExpanded && (
+                            <div className="section-content conversation-content">
+                                {conversationHistory.map((msg, idx) => (
+                                    <div key={idx} className={`conversation-message ${msg.type}`}>
+                                        {msg.hasImage && (
+                                            <div className="message-image">
+                                                <img src={new URL('../assets/sample-handwriting.png', import.meta.url).href} alt="풀이 과정" />
+                                            </div>
+                                        )}
+                                        <div className="message-text">
+                                            <MathText>{msg.text}</MathText>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Right Side - AI Chat */}
-                <div className="analysis-right">
-                    <div className="ai-chat-panel">
-                        <h2 className="chat-title">AI</h2>
-
-                        <div className="chat-messages">
-                            {chatMessages.map((msg, index) => (
-                                <div key={index} className={`chat-message ${msg.type}`}>
-                                    <p><MathText>{msg.text}</MathText></p>
-                                </div>
-                            ))}
-                            {isTyping && (
-                                <div className="chat-message ai typing">
-                                    <p>AI가 답변을 작성 중입니다...</p>
-                                </div>
-                            )}
+                {/* Right Column */}
+                <div className="analysis-right-col" ref={rightColRef}>
+                    {/* 프롬프트 내용 요약 */}
+                    <div className="analysis-section">
+                        <div className="section-header-static with-icon">
+                            <div className="section-title-wrapper">
+                                <svg className="section-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path fill="#00B3AB" d="M14 20a1 1 0 1 1 0 2h-4a1 1 0 0 1 0-2h4ZM12 2c1.176 0 2.298.228 3.328.638a3.01 3.01 0 0 0 1 3.859l.106.066.06.094A3.01 3.01 0 0 0 19 8c.556 0 1.011-.149 1.362-.328a9 9 0 0 1-4 11.202 1 1 0 0 1-.485.126H8.124a1 1 0 0 1-.485-.126A9 9 0 0 1 12 2Zm0 5a1 1 0 0 0-.946.677l-.13.378c-.3.879-.99 1.57-1.87 1.87l-.377.129a1 1 0 0 0 0 1.892l.378.13c.88.3 1.57.99 1.87 1.87l.13.377a1 1 0 0 0 1.891 0l.13-.378c.3-.879.99-1.57 1.87-1.87l.377-.129a1 1 0 0 0 0-1.892l-.378-.13a3 3 0 0 1-1.87-1.87l-.129-.377A1 1 0 0 0 12 7Zm7-5c.361 0 .598.187.694.277.116.11.198.25.27.391a1 1 0 0 0 .4.386c.132.073.256.142.363.256a1.01 1.01 0 0 1 0 1.38c-.107.114-.23.183-.365.256a1 1 0 0 0-.4.386c-.077.144-.147.276-.268.39a1.01 1.01 0 0 1-1.39 0c-.12-.113-.19-.247-.267-.39a1 1 0 0 0-.4-.386 1.302 1.302 0 0 1-.364-.256 1.01 1.01 0 0 1 .001-1.38c.106-.106.229-.192.364-.256a1 1 0 0 0 .4-.386c.076-.143.147-.277.267-.39C18.4 2.186 18.638 2 19 2Z" />
+                                </svg>
+                                <span className="section-title">프롬프트 내용 요약</span>
+                            </div>
                         </div>
+                        <div className="section-content">
+                            <p className="summary-text">
+                                이 문제는 함수의 연속성과 미분가능성을 대한 깊은 이해를 요구합니다. 특히 구간의 정의된 함수의 경계점에서 연속과 미분가능 조건이 어떻게 적용되는지를 파악하는 것이 핵심입니다.
+                            </p>
+                            <p className="summary-text">
+                                학생은 x = 1 에서의 좌미분계수와 우미분계수가 같아야 한다는 조건을 정확하게 활용했습니다. 다만, 좌미분을 한 극한에 값만 상수 대입 때 실수 항상지 완전히 보이지 않아야 유형이 되는 과정이 필요한 바로 직접이 문제적거나 바로의 적용하여 문제를 잘 해결할 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
 
-                        <div className="chat-input-container">
-                            <input
-                                type="text"
-                                className="chat-input"
-                                placeholder="AI에게 질문하세요..."
-                                value={chatInput}
-                                onChange={(e) => setChatInput(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                disabled={isTyping}
-                            />
-                            <button
-                                className="send-btn"
-                                onClick={handleSendMessage}
-                                disabled={isTyping || !chatInput.trim()}
-                            >
-                                전송
-                            </button>
+                    {/* 사고 흐름 정리 */}
+                    <div className="analysis-section">
+                        <div className="section-header-static with-icon">
+                            <div className="section-title-wrapper">
+                                <svg className="section-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path fill="#00B3AB" d="M5.5 2.5c1.025 0 1.904.617 2.29 1.5h8.71a4.5 4.5 0 1 1 0 9h-9a2.5 2.5 0 0 0 0 5h8.71a2.499 2.499 0 1 1 0 2H7.5a4.5 4.5 0 1 1 0-9h9a2.5 2.5 0 0 0 0-5H7.79A2.499 2.499 0 1 1 5.5 2.5Z" />
+                                </svg>
+                                <span className="section-title">사고 흐름 정리</span>
+                            </div>
+                        </div>
+                        <div className="section-content">
+                            <div className="section-content">
+                                <div className="thinking-timeline">
+                                    <div className="thinking-item">
+                                        <div className="thinking-icon">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <circle cx="10" cy="10" r="9" fill="#14B8A6" />
+                                                <path d="M6 10l3 3 5-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <div className="thinking-content">
+                                            <h4 className="thinking-title">사고 오류 포인트</h4>
+                                            <p className="thinking-text">
+                                                값이 반복된다는 직관에 집중하면서,<br />
+                                                A와 B의 교집합 개수가 정확히 몇 개인지를 먼저 따져보지 못했어요.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="thinking-item">
+                                        <div className="thinking-icon">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <circle cx="10" cy="10" r="9" fill="#14B8A6" />
+                                                <path d="M6 10l3 3 5-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <div className="thinking-content">
+                                            <h4 className="thinking-title">핵심 개념 정리</h4>
+                                            <p className="thinking-text">
+                                                A와 B의 교집합 개수 조건은<br />
+                                                서로 다른 수열 항들 중 같은 값이 되는 경우의 수를 정확히 제한하는 조건이에요.<br />
+                                                따라서 단순한 반복 여부가 아니라,<br />
+                                                어떤 항들이 같은 값을 가져야 하는지를 하나씩 확인하는 과정이 필요해요.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="thinking-item">
+                                        <div className="thinking-icon">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <circle cx="10" cy="10" r="9" fill="#14B8A6" />
+                                                <path d="M6 10l3 3 5-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <div className="thinking-content">
+                                            <h4 className="thinking-title">다음 학습 추천</h4>
+                                            <p className="thinking-text">
+                                                비슷한 유형의 문제에서<br />
+                                                '교집합의 개수'나 '같은 값의 개수' 조건이 나오는 문제를 다시 풀어보며,<br />
+                                                항을 직접 나열해 조건을 체크하는 연습을 해보세요.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Highlight Box */}
+                                    <div className="thinking-highlight">
+                                        조건의 개수는 직관으로 판단하지 말고, <strong>어떤 항들이 같아지는지 직접 대응시켜 확인</strong>해야 한다.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </main>
 
-            {/* Loading Modal */}
-            {showLoadingModal && (
-                <div className="modal-overlay loading-modal">
-                    <div className="loading-content">
-                        <div className="loading-robot">
-                            <div className="robot-bubble">•••</div>
-                            <div className="robot-icon">🤖</div>
-                        </div>
-                        <p className="loading-text">AI가 문제를 찾고 있어요</p>
-                    </div>
-                </div>
-            )}
-
-            {/* Variation Problem Modal */}
-            {showVariationModal && (
-                <div className="modal-overlay variation-modal-overlay">
-                    <div className="variation-modal">
-                        <button className="modal-close-btn" onClick={handleCloseVariation}>
-                            ✕
-                        </button>
-
-                        <div className="variation-content">
-                            {/* Left - Passage and Question */}
-                            <div className="variation-left">
-                                <h3 className="variation-title">Q1. ({variationProblem.subject})</h3>
-
-                                <div className="variation-passage-box">
-                                    <p><MathText>{variationProblem.passage}</MathText></p>
-                                </div>
-
-                                <div className="variation-question-box">
-                                    <p><MathText>{variationProblem.question}</MathText></p>
-                                </div>
-                            </div>
-
-                            {/* Right - Choices and Submit */}
-                            <div className="variation-right">
-                                <div className="difficulty-info">
-                                    <div className="difficulty-row">
-                                        <span className="difficulty-label">난이도</span>
-                                        <span className="difficulty-value">{variationProblem.difficulty}</span>
-                                    </div>
-                                    <div className="difficulty-row">
-                                        <span className="difficulty-label">보상</span>
-                                        <span className="difficulty-value reward">🥫 {variationProblem.reward}</span>
-                                    </div>
-                                    <div className="timer-row">
-                                        <span className="timer-label">남은 시간</span>
-                                        <span className={`timer-value ${variationTimer <= 60 ? 'warning' : ''}`}>
-                                            {formatTime(variationTimer)}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="variation-choices">
-                                    {variationProblem.choices.map((choice) => (
-                                        <button
-                                            key={choice.id}
-                                            className={`variation-choice-btn ${getVariationChoiceClass(choice.id)}`}
-                                            onClick={() => !variationSubmitted && setSelectedVariationAnswer(choice.id)}
-                                            disabled={variationSubmitted}
-                                        >
-                                            <MathText>{choice.text}</MathText>
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <button
-                                    className={`variation-submit-btn ${selectedVariationAnswer !== null ? 'active' : ''}`}
-                                    onClick={handleVariationSubmit}
-                                    disabled={selectedVariationAnswer === null || variationSubmitted}
-                                >
-                                    {variationSubmitted
-                                        ? (selectedVariationAnswer === variationProblem.correctAnswer ? '🎉 정답!' : '오답')
-                                        : '제출하기'
-                                    }
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* Footer Disclaimer */}
+            <div className="analysis-footer">
+                <svg className="info-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="7" stroke="#888888" strokeWidth="1.5" />
+                    <path d="M8 7v4M8 5h.01" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                <span className="footer-text">
+                    문제를 풀면서 AI 튜터와 나눈 대화를 바탕으로서고 흐름과 핵심 개념을 정리한 기록이에요.
+                </span>
+            </div>
         </div>
     );
 }
