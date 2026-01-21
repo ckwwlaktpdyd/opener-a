@@ -75,7 +75,6 @@
 /* Problem Area */
 .problem-area {
     flex: 1;
-    max-width: 950px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -88,7 +87,7 @@
     border-radius: 20px;
     box-shadow: 0 4px 30px rgba(40, 42, 46, 0.04);
     overflow: hidden;
-    height: 420px;
+    height: 560px;
     display: flex;
     flex-direction: column;
 }
@@ -312,21 +311,22 @@
 
 .answer-choices {
     padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
 .choice-option {
-    height: 48px;
+    height: 52px;
     padding: 0 16px;
-    background: var(--neutral-50);
+    background: #F4F4F5;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-size: 16px;
+    font-weight: 500;
     color: var(--neutral-900);
     cursor: pointer;
     transition: all 0.2s;
@@ -342,11 +342,13 @@
 }
 
 .choice-option.correct {
-    background: var(--success-200);
+    background: #E8F8EE;
+    border: 1px solid var(--success-600);
 }
 
 .choice-option.incorrect {
-    background: var(--danger-200);
+    background: #FFEEEE;
+    border: 1px solid var(--danger-600);
 }
 
 .choice-option:disabled {
@@ -354,17 +356,18 @@
 }
 
 .choice-radio {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
     flex-shrink: 0;
     background: var(--white);
-    border: 2px solid var(--neutral-200);
+    border: 2px solid var(--neutral-300);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 12px;
+    font-weight: 700;
     color: var(--white);
 }
 
