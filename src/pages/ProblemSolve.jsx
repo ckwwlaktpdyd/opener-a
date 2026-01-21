@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sampleProblems } from '../data/mockData';
 import MathText from '../components/MathText';
@@ -54,6 +54,7 @@ export default function ProblemSolve() {
     const [chatInput, setChatInput] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
     const [messageCounter, setMessageCounter] = useState(0); // UT용 메시지 카운터
+    const chatContentRef = useRef(null); // 채팅 자동 스크롤용 ref
 
     // Variation problem states
     const [showVariationLoading, setShowVariationLoading] = useState(false);
@@ -216,6 +217,13 @@ export default function ProblemSolve() {
         }
     }, [showVariationModal, variationSubmitted]);
 
+    // 채팅 메시지 추가 시 자동 스크롤
+    useEffect(() => {
+        if (chatContentRef.current) {
+            chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+        }
+    }, [chatHistory]);
+
     const formatTime = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
     const isCorrect = selectedAnswer === currentProblem.correctAnswer;
     const isVariationCorrect = variationAnswer === currentProblem.variationProblem?.correctAnswer;
@@ -344,7 +352,7 @@ export default function ProblemSolve() {
                         <div className="ai-title"><span className="ai-dot"></span><span>AI 튜터</span></div>
                         <button className="ai-info-btn">ⓘ</button>
                     </div>
-                    <div className="ai-content">
+                    <div className="ai-content" ref={chatContentRef}>
                         {showAnalysis && chatHistory.map((msg, idx) => (
                             <div key={idx} className={`chat-msg ${msg.type}`}>
                                 {msg.type === 'ai' && (
